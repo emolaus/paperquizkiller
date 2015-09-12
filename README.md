@@ -23,3 +23,5 @@ Start mongod with `mongod --dbpath <app-path>/data`
 First time running, run `npm install`
 
 Start app with `npm start`
+
+Visit localhost:3000/browse for a smoke test. You should see some LaTeX rendered math problems.
