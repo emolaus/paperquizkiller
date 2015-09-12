@@ -13,7 +13,9 @@ The actual database is not included in the repo.
 ### How do I get set up? ###
 
 Install node, I'm using 0.10.25
+
 Install npm, I'm using 1.3.10
+
 Install mongodb, I'm using 3.0.6
 
 Start mongod with `mongod --dbpath <app-path>/data`
