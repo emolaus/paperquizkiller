@@ -16,7 +16,6 @@ router.get('/browse', function (req, res) {
     var collection = db.get('problem_collection');
     collection.find({},{}, function (e, problem_set){
         mathstuff.createProblem(problem_set);
-        console.log(problem_set)
         res.render('browse', { 
         problem_list: problem_set, title: 'browse'
       });    

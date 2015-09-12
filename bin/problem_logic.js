@@ -10,11 +10,11 @@ mathstuff.createProblem = function(problem_set, seed) {
     // Do not use for(in), creates local copy
     for (var i = 0; i < problem_set.length; i++) {
       setOne(problem_set[i]);
-      problem_set[i].seed = seed;
+      //problem_set[i].seed = seed;
     }
   } else {
     setOne(problem, seed);
-    problem_set.seed = seed;
+    //problem_set.seed = seed;
   }
 
 }
@@ -40,8 +40,8 @@ function setParameter(paramObj, seed) {
   
   // TODO
   // If array, this is a set
-  if (Array.isArray(paramObj)) {
-    return mathjs.pickRandom(paramObj);
+  if (Array.isArray(paramObj.set)) {
+    return mathjs.pickRandom(paramObj.set);
   }
   return 1;
    
