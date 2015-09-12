@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  each problem in problem_list
+    p Problem text: 
+    p(class='code') #{problem.text}
+    p Example: <br>  \( #{problem.instantiated} \)
+  script(src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML')
