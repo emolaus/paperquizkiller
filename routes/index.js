@@ -20,7 +20,8 @@ router.get('/browse', function (req, res) {
 router.get('/problems', function(req, res, next) {
   var db = req.db;
   var math = db.get('problemCollection');
-  var tag = req.param('tag');
+  var tag = req.params.tag;
+  console.log("index.js: tag = " + tag);
   var query = tag ? {tags: tag}: {};
   var promise = math.find(query, {limit: 10}, function () {});/*(err, doc) {
     if (err) console.log("err: " + err);

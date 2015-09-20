@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="createTest">
 
 <head>
 
@@ -28,32 +28,33 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-	h1 {
-	    margin-top: 100px;
-	    text-align: center;
-	}
-	#ornament {
-	    display: block;
-	    margin-left: auto;
-	    margin-right: auto;    
-	    width:169px;
-	    height:100px;
-	}
-	.row {margin-left: 10px;}
-	.problemText {font-size: 1.3em !important;}
-	.addButton {float: right;}
-	.problem {
-	    margin-top: 20px;
-	    margin-left: 20px;
-	    margin-right: 20px;
-	    padding: 10px;
-	    background-color: #f6f6f6;
-	    border-radius: 10px;
-	}
-	.problemInstance {font-size: 1.6em;}
-	.testHeading {margin-top: 20px; margin-bottom: 20px;}
-	#searchButton {margin-top: 10px;}
-	#doneButton {font-size: 2.0em;}
+	    h1 {
+	        margin-top: 100px;
+	        text-align: center;
+	    }
+	    #ornament {
+	        display: block;
+	        margin-left: auto;
+	        margin-right: auto;    
+	        width:169px;
+	        height:100px;
+	    }
+	    .row {margin-left: 10px;}
+	    .problemText {font-size: 1.3em !important;}
+	    .addButton {float: right; }
+	    .problem {
+	        margin-top: 20px
+	        margin-right: 20px;
+	        margin-bottom: 10px;
+	        padding: 10px;
+	        background-color: #f6f6f6;
+	        border-radius: 10px;
+	    }
+	    .problemInstance {font-size: 1.6em;}
+	    .testHeading {margin-top: 20px; margin-bottom: 20px;}
+	    #searchButton {margin-top: 10px;}
+	    #doneButton {font-size: 2.0em;}
+	    #tag {width: 300px;}
     </style>
 </head>
 
@@ -96,17 +97,26 @@
 	<img id="ornament" src="images/ornament.png">
 	
     <div class="row">
-	<div class="col-sm-6">
+	  <div class="col-sm-6" ng-controller="browseController as browse">
 	    <h2><i>Browse problems:</i></h2>
 	    <div class="form-group">
-		<label for="tags">Tags:</label>
-		<input id="tags" type="text" class="form-control" style="width: 300px">
-		<button id="searchButton" class="btn btn-default">Search</button>
+		    <label for="tag">Tag:</label>
+		    <input id="tag" type="text" class="form-control" ng-model="tagString">
+		    <button id="searchButton" class="btn btn-default" ng-click="search()">Search</button>
 	    </div>
+	    <div id="problems">
+	    
+	      <div class="problem" ng-repeat="problem in problems">
+		      <button class="addButton btn btn-default">Add >></button>
+		      <div class="problemText">Problem: {{problem.text}}</div>
+	      </div>
+	      
+	    </div> <!-- #problems -->
+	    <!--
 	    <div class="problem">
 		<button class="addButton btn btn-default">Add >></button>
 		<div class="problemText">Problem: "_A + _B ="</div>
-		<!--<div class="setLabel">Parameters: </div>-->
+		
 		
 		<div>
 		    <div class="set">\(A \in \{1,2,3\}\)</div>
@@ -117,7 +127,6 @@
 	    <div class="problem">
 		<button class="addButton btn btn-default">Add >></button>
 		<div class="problemText">Problem: "_A - _B ="</div>
-		<!--<div class="setLabel">Parameters: </div>-->
 		
 		<div>
 		    <div class="set">\(A \in \{4,5,6\}\)</div>
@@ -128,7 +137,7 @@
 	    <div class="problem">
 		<button class="addButton btn btn-default">Add >></button>
 		<div class="problemText">Problem: "_A + (_B) ="</div>
-		<!--<div class="setLabel">Parameters: </div>-->
+
 		
 		<div>
 		    <div class="set">\(A \in \{1,2,3\}\)</div>
@@ -136,8 +145,8 @@
 		</div>
 		<div class="example">Example: \(1 + (-5) = \)</div>
 	    </div>
+	</div>-->
 	</div>
-	
 	<div class="col-sm-6">
 	    <h2><i>Your test might look like this:</i></h2>
 	    <h3 class="testHeading" contenteditable="">Arithmetic test 1</h3>
@@ -184,11 +193,13 @@
     </footer>-->
 
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <script src="javascripts/jquery.js"></script>
     <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script type= "text/javascript" src="javascripts/bootstrap.min.js"></script>
+    <script type= "text/javascript" src="javascripts/angular.js"></script>
+    <script type= "text/javascript" src="javascripts/createTestApp.js"></script>
 
 </body>
 
