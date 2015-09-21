@@ -12,11 +12,13 @@ The actual database is not included in the repo.
 
 ### How do I get set up? ###
 
-Install node, I'm using 0.10.25
+Install node, I'm using v. 0.10.25
 
-Install npm, I'm using 1.3.10
+Install npm, I'm using v. 1.3.10
 
-Install mongodb, I'm using 3.0.6
+Install mongodb, I'm using v. 3.0.6
+
+Download mathjax under public/libs/mathjax/, I'm using v. 2.5
 
 Start mongod with `mongod --dbpath <app-path>/data`
 

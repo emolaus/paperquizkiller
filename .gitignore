@@ -1,3 +1,4 @@
 data/
 node_modules/
 bin/npm-debug.log
+public/libs/mathjax
