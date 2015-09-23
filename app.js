@@ -12,6 +12,7 @@ var insertDefaultData = require('./bin/insertDefaultData');
 insertDefaultData(db);
 
 var routes = require('./routes/index');
+var postRoutes = require('./routes/post');
 //var users = require('./routes/users');
 //var api = require('./routes/api');
 
@@ -37,6 +38,7 @@ app.use(function(req,res,next){
 });
 
 app.use('/', routes);
+app.use('/', postRoutes);
 //app.use('/problems', api);
 //app.use('/users', users);
 
