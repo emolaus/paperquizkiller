@@ -1,4 +1,5 @@
 var mathjs = require('mathjs');
+var _ = require('underscore');
 var mathstuff = {};
 
 mathstuff.createProblem = function(problem_set, seed) {
@@ -47,4 +48,28 @@ function setParameter(paramObj, seed) {
    
   // TODO if object, parse
 }
+/**
+Pass two arguments: a db handle and either 
+- an array of problem uuid's + db-handle) or
+- Not implemented: Pass uuid of testtemplate
+
+Returns a complete test, i.e. an array of instantiated problems
+*/
+mathstuff.instantiate = function (db, arg2) {
+  // 
+  if (_.isObject(db) && _.isArray(arg2)) {
+    var uuids = arg2;
+    // TODO: fetch all problems
+    var collection = db.get('problemCollection');
+    _.each(uuids, function (element) {
+      // HERE
+      collection.findById(element.uuid, function () {});
+    });
+    // For each that is parametrized, instantiate
+    // Return list of problems
+    return [];
+  }
+  // TODO instantiate from testtemplate uuid
+}
+
 module.exports = mathstuff;
