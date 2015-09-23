@@ -6,8 +6,15 @@ var router = express.Router();
 	Return instantiated and html formatted test (no <head>) 
 */
 router.post('/preview', function(req, res, next) {
-  // TODO call instantiate()
+  var uuids = []; // get POST data
+  
+  // TODO call instantiate() (not implemented)
+  // var testInstance = instantiate();
+  
   // TODO call renderTest()
+  // var htmlRenderedTest = renderTest();
+
   // TODO send result
+  //res.send(htmlRenderedTest);
 });
 module.exports = router;
