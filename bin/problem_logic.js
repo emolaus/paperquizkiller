@@ -1,5 +1,6 @@
 var mathjs = require('mathjs');
 var _ = require('underscore');
+var async = require('async');
 var mathstuff = {};
 
 mathstuff.createProblem = function(problem_set, seed) {
@@ -23,6 +24,8 @@ function setOne(problem, seed) {
   // for each parameter
     // while "_" + parameter found in problem text
     // replace "_" + parameter with randomized value
+  var instantiatedProblem = {};
+  instantiatedProblem.problemId = problem._id;
   var newText = problem.text;
   for (var param in problem.parameters){
     if (problem.parameters.hasOwnProperty(param)) {
@@ -34,7 +37,8 @@ function setOne(problem, seed) {
         }
     }
   }
-  problem.instantiated = newText;  
+  instantiatedProblem.text = newText;  
+  return instantiatedProblem;
 }
 
 function setParameter(paramObj, seed) {
@@ -49,27 +53,57 @@ function setParameter(paramObj, seed) {
   // TODO if object, parse
 }
 /**
-Pass two arguments: a db handle and either 
-- an array of problem uuid's + db-handle) or
+Pass two arguments: a db handle (pointing at right database 'math') and either 
+- an array of problems (uuid's: {uuid: "..."}) or
 - Not implemented: Pass uuid of testtemplate
 
 Returns a complete test, i.e. an array of instantiated problems
 */
-mathstuff.instantiate = function (db, arg2) {
-  // 
+mathstuff.instantiate = function (db, arg2, callback) {
+  // array passed?
   if (_.isObject(db) && _.isArray(arg2)) {
-    var uuids = arg2;
-    // TODO: fetch all problems
-    var collection = db.get('problemCollection');
-    _.each(uuids, function (element) {
-      // HERE
-      collection.findById(element.uuid, function () {});
-    });
-    // For each that is parametrized, instantiate
-    // Return list of problems
-    return [];
+    return instantiateFromProblemUUIDs(db, arg2, callback);
   }
   // TODO instantiate from testtemplate uuid
+  else if (_.isObject(db) && _.isString(arg2))
+  {
+      // TODO
+      return [];
+  }
+  return false;
+}
+function instantiateFromProblemUUIDs(db, uuids, finalCallback) {
+  if (_.isFunction(finalCallback)) console.log("finalCallback is function");
+  else console.log("finalCallback is " + typeof(finalCallback));
+  var instantiatedTest = [];
+  var collection = db.get('problemCollection');
+  async.eachSeries(
+    uuids, 
+    function iterator(item, callback) {
+      collection.findById(item.uuid, function (error, problem) {
+        if (error) {
+          console.log('instantiate(): error: ' + error);
+          callback(error);
+        } else {
+          var instantiatedProblem = setOne(problem);
+          instantiatedTest.push(instantiatedProblem);
+          callback(null);
+        }
+      });
+  },function done() {
+    finalCallback(instantiatedTest);
+  });
+  /*
+  _.each(uuids, function (element) {
+    // TODO: project objects to limit function
+    collection.findById(element.uuid, function (error, problem) {
+      if (error) console.log('instantiate(): error: ' + error);
+      else {
+          instantiatedTest.push(setOne(problem));
+      }
+    });
+  });*/
+  //return instantiatedTest;
 }
 
 module.exports = mathstuff;

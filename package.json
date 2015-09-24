@@ -16,6 +16,7 @@
     "mongodb": "~2.0.33",
     "monk": "~1.0.1",
     "mathjs": "~2.2.0",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "async": "~1.4.2"
   }
 }
