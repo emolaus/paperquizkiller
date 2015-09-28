@@ -7,8 +7,9 @@ var mathStuff = require('../bin/problem_logic.js');
 */
 router.post('/preview', function(req, res, next) {
   var uuids = [{uuid: '55fc65a49fb3decb243d90ee'}, {uuid: '55fc65a49fb3decb243d90ef'}]; // get POST data
-
-  var testInstance = mathStuff.instantiate(req.db, uuids, function (instantiatedTest) {
+  var data = req.body;
+  console.log(JSON.stringify(data));
+  var testInstance = mathStuff.instantiate(req.db, data.problems, function (instantiatedTest) {
   	htmlRenderedTest = res.render('test', {test: instantiatedTest});
   });
 });

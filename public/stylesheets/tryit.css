@@ -27,5 +27,6 @@ h1 {
 
 .testHeading {margin-top: 20px; margin-bottom: 20px;}
 #searchButton {margin-top: 10px;}
-#doneButton {font-size: 2.0em;}
+#doneButton {font-size: 1.5em;}
+#previewButton {font-size: 1.5em;}
 #tag {width: 300px;}

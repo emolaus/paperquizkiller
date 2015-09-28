@@ -29,7 +29,7 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body ng-controller="MainController">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
@@ -54,7 +54,7 @@
               <a href="#about">About</a>
             </li>
             <li>
-              <a href="#tryÄ">Try it out</a>
+              <a href="#try it">Try it out</a>
             </li>
           </ul>
         </div>
@@ -76,17 +76,17 @@
   	    <button id="searchButton" class="btn btn-default" ng-click="search()">Search</button>
       </div>
       <div id="problems">
-        <div class="problem" ng-repeat="problem in problems">
-  	      <button class="addButton btn btn-default" ng-click="add(problem.text)">Add >></button>
+        <div class="problem" ng-repeat="problem in availableProblems">
+  	      <button class="addButton btn btn-default" ng-click="add(problem.text, problem._id)">Add >></button>
   	      <div class="problemText">Problem: {{problem.text}}</div>
         </div>
       </div> 
   	</div>
   	<div class="col-sm-6" ng-controller="testController as test"=>
   	  <h2><i>Your test:</i></h2>
-  	  <h3 class="testHeading" contenteditable="">Arithmetic test 1</h3>
+  	  <h3 class="testHeading" contenteditable="">{{quiz.title}}</h3>
   	  <div id="problemInstances">
-        <div class="problemInstance" ng-repeat="problem in problems">
+        <div class="problemInstance" ng-repeat="problem in quiz.problems">
   	      <button class="removeButton btn btn-default">Remove</button>
         	<div class="exampleText">{{($index +  1) + "."}} &nbsp; {{problem.text}}</div>
         </div>
@@ -96,7 +96,7 @@
   	<div class="row">
       <div class="col-sm-9"></div>
       <div class="col-sm-1">
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Preview</button>
+        <button id="previewButton" class="btn btn-default" ng-click="preview()">Preview</button>
       </div>
   		<div class="col-sm-1">
   		  <button id="doneButton" class="btn btn-default">Done</button>
