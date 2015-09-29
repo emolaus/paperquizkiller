@@ -9,7 +9,10 @@
     $scope.preview = function () {
       $http.post('/preview', $scope.quiz).then(
         function successCallback(response) {
-          console.log('Success. ' + JSON.stringify(response));
+          console.log(JSON.stringify(response));
+          $('#modalPreviewBody').html(response.data); 
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+          $('#modalPreview').modal('show');
         },
         function errorCallback(response) {
           console.log('Error. ' + response);
@@ -23,7 +26,7 @@
       var appendTag = tag ? "?tag=" + tag : "";
       $http.get("/problems" + appendTag).success(function(response) {
         $scope.availableProblems = response;
-        console.log('Data. ' + JSON.stringify(response));
+        console.log(response);
       });
     }
 

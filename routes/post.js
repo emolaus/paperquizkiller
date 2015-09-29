@@ -10,6 +10,7 @@ router.post('/preview', function(req, res, next) {
   var data = req.body;
   console.log(JSON.stringify(data));
   var testInstance = mathStuff.instantiate(req.db, data.problems, function (instantiatedTest) {
+    console.log(JSON.stringify(instantiatedTest));
   	htmlRenderedTest = res.render('test', {test: instantiatedTest});
   });
 });
