@@ -5,6 +5,7 @@
     $scope.quiz.problems = [];
     $scope.availableProblems = [];
     $scope.quiz.title = 'Arithmetic test 2';
+    $scope.tagString = "";
 
     $scope.preview = function () {
       // THis next line isn't great, would prefer two-way binding
@@ -24,25 +25,32 @@
     $scope.add = function (text, uuid) {
       $scope.quiz.problems.push({text: text, uuid: uuid});
     }
-    var getProblems = function(tag) {
-      var appendTag = tag ? "?tag=" + tag : "";
-      $http.get("/problems" + appendTag).success(function(response) {
+    var getProblems = function(tagString) {
+      var appendTag = "";
+      console.log(tagString)
+      if (tagString) {
+        tags = tagString.match(/("[^"]+"|[^;,"\s]+)/g);
+        // Send maximally 6 search words
+        if (tags.length > 6) tags = tags.slice(0,6);
+        appendTag = tags.join("/");
+      }
+      console.log('appendTag: ' + appendTag);
+      $http.get("/problems/" + appendTag).success(function(response) {
         $scope.availableProblems = response;
-        console.log(response);
       });
     }
 
     $scope.search = function () {
       getProblems($scope.tagString);
     }
-    getProblems();
+    getProblems("");
     /*$rootScope.$on('rootScope:emit', function (event, data) {
       console.log($rootScope.quiz.problems);
     });*/
   }]);
 
   app.controller('browseController', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
-    $scope.tagString = "";
+    //$scope.tagString = "";
     
     /*var getProblems = function(tag) {
       var appendTag = tag ? "?tag=" + tag : "";

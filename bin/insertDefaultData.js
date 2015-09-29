@@ -1,11 +1,11 @@
 var problems = [{
   text: "1+1=",
   solution: "3",
-  tags: ['arithmetic']
+  tags: ['arithmetic', 'basic', 'abc']
 }, {
   text: "_A+_B=",
   solution: "_A+_B",
-  tags: ['arithmetic'],
+  tags: ['arithmetic', 'basic'],
   parameters: {
     A: {
       set: [1, 2, 3, 4, 5]
