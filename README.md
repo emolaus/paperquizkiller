@@ -7,6 +7,7 @@ This README would normally document whatever steps are necessary to get your app
 A node, express and mongo powered site where math teachers can generete tests from a database of math problems and students can take the tests. The problems are randomized so that two tests are similar but not quite the same. 
 
 Version 0: a bare-bones application setup using express-generator.
+Version 1: a pitch site and a demo flow of the application
 
 The actual database is not included in the repo.
 
@@ -26,4 +27,5 @@ First time running, run `npm install`
 
 Start app with `npm start`
 
-Visit localhost:3000/browse for a smoke test. You should see some LaTeX rendered math problems.
+Visit localhost:3000/ To see the gorgeous bootstrap pitch site. 
+Visit localhost:3000/tryit.html to build a test.
