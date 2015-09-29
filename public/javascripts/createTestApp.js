@@ -7,6 +7,8 @@
     $scope.quiz.title = 'Arithmetic test 2';
 
     $scope.preview = function () {
+      // THis next line isn't great, would prefer two-way binding
+      $scope.quiz.title = $('#testHeading').html();
       $http.post('/preview', $scope.quiz).then(
         function successCallback(response) {
           console.log(JSON.stringify(response));
@@ -15,7 +17,7 @@
           $('#modalPreview').modal('show');
         },
         function errorCallback(response) {
-          console.log('Error. ' + response);
+          console.log('Error. ' + JSON.stringify(response));
         }
       );
     }

@@ -84,11 +84,11 @@
   	</div>
   	<div class="col-sm-6" ng-controller="testController as test"=>
   	  <h2><i>Your test:</i></h2>
-  	  <h3 class="testHeading" contenteditable="">{{quiz.title}}</h3>
+  	  <h3 id="testHeading" class="testHeading" contenteditable="">{{quiz.title}}</h3>
   	  <div id="problemInstances">
         <div class="problemInstance" ng-repeat="problem in quiz.problems">
   	      <button class="removeButton btn btn-default">Remove</button>
-        	<div class="exampleText">{{($index +  1) + "."}} &nbsp; {{problem.text}}</div>
+        	<div class="exampleText">{{($index +  1) + "."}} {{problem.text}}</div>
         </div>
       </div>
   	</div>
