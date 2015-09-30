@@ -87,7 +87,7 @@
   	  <h3 id="testHeading" class="testHeading" contenteditable="">{{quiz.title}}</h3>
   	  <div id="problemInstances">
         <div class="problemInstance" ng-repeat="problem in quiz.problems">
-  	      <button class="removeButton btn btn-default">Remove</button>
+  	      <!--<button class="removeButton btn btn-default">Remove</button>-->
         	<div class="exampleText">{{($index +  1) + "."}} {{problem.text}}</div>
         </div>
       </div>
@@ -99,7 +99,7 @@
         <button id="previewButton" class="btn btn-default" ng-click="preview()">Preview</button>
       </div>
   		<div class="col-sm-1">
-  		  <button id="doneButton" class="btn btn-default">Done</button>
+  		  <button id="doneButton" class="btn btn-default" ng-click="done()">Done</button>
   		</div>
   	</div>
     <!-- Trigger the modal with a button -->
@@ -126,9 +126,24 @@
       </div>
 
     <script src="javascripts/jquery.js"></script>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-
+    <!--<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+        "HTML-CSS": { 
+          availableFonts: ["TeX"] ,
+          scale: 120
+        }
+      });
+</script>
+    <script type= "text/javascript" src="libs/mathjax/MathJax.js"></script>
+    
     <!-- Bootstrap Core JavaScript -->
     <script type= "text/javascript" src="javascripts/bootstrap.min.js"></script>
     <script type= "text/javascript" src="javascripts/angular.js"></script>

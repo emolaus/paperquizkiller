@@ -12,13 +12,16 @@
       $scope.quiz.title = $('#testHeading').html();
       $http.post('/preview', $scope.quiz).then(
         function successCallback(response) {
-          console.log(JSON.stringify(response));
+
           $('#modalPreviewBody').html(response.data); 
           MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
           $('#modalPreview').modal('show');
+
         },
         function errorCallback(response) {
+          
           console.log('Error. ' + JSON.stringify(response));
+        
         }
       );
     }
@@ -43,10 +46,23 @@
     $scope.search = function () {
       getProblems($scope.tagString);
     }
+    // Get some problems
     getProblems("");
-    /*$rootScope.$on('rootScope:emit', function (event, data) {
-      console.log($rootScope.quiz.problems);
-    });*/
+
+    // Button click "done"
+    $scope.done = function () {
+      // TODO call API createTest
+      // What if quiz already exists? Update not create.
+      $http.post('createQuiz', []).then(
+        function successCallback(response) {
+
+        },
+        function errorCallback(response) {
+          console.log(response);
+        }
+
+      );
+    }
   }]);
 
   app.controller('browseController', ['$scope', '$http', '$rootScope', function ($scope, $http, $rootScope) {
