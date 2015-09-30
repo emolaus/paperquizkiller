@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mathStuff = require('../bin/problem_logic.js');
+
 var _ = require('underscore');
 /*
 	Receive list of uuids [{id: ...},{id: ...}, ...]
@@ -19,40 +20,20 @@ router.post('/preview', function(req, res, next) {
   Check if each uuid is valid, save to db.
 */
 router.post('/createQuiz', function (req, res, next) {
-  // Make sure the data is an array of strings
-  if (!_.isArray(req.body)) {
-    res.status(400).send('Wrong data format');
-    return;
-  }
-  var problems = req.body;
-
-  // Don't let through empty tests
-  if (problem.length < 1) {
-    res.status(400).send('Test is empty');
-  }
-
-  // Don't let through absurdely large tests
-  if (problems.length > 100) {
-    res.status(400).send('Too many problems in quiz');
+  if (!_.has(req, 'body')) {
+    res.status(400).send('Data missing');
     return;
   }
 
-  var allCorrectStrings = true;
-  _.each(problems, function (problem) {
-    if (!allCorrectStrings) return;
-
-    if (!_.isObject(problem)) allCorrectStrings = false;
-    else if (!_.has(problem, 'uuid')) allCorrectStrings = false;
-    else if (!_.isString(problem.uuid)) allCorrectStrings = false;
-    else if (problem.uuid.length != 24) allCorrectStrings = false;
-  });
-  if (!allCorrectStrings) {
-    res.status(400).send('Error in data.');
-    return;
-  }
-
-  res.status(200).send('Tadaaa!');
-  return;
+  mathStuff.insertQuiz(req.body, req.db,
+    function successCallback() {
+      res.send('Tadaaaa!');
+    },
+    function errorCallback(error) {
+      res.status(400).send(error);
+    }
+  );
+  
   // Make sure the given id's are available in the problemCollection
 
   // Submit the quiz

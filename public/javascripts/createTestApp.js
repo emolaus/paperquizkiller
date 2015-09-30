@@ -37,7 +37,7 @@
         if (tags.length > 6) tags = tags.slice(0,6);
         appendTag = tags.join("/");
       }
-      console.log('appendTag: ' + appendTag);
+
       $http.get("/problems/" + appendTag).success(function(response) {
         $scope.availableProblems = response;
       });
@@ -53,9 +53,9 @@
     $scope.done = function () {
       // TODO call API createTest
       // What if quiz already exists? Update not create.
-      $http.post('createQuiz', []).then(
+      $http.post('createQuiz', $scope.quiz).then(
         function successCallback(response) {
-
+          console.log(response);
         },
         function errorCallback(response) {
           console.log(response);

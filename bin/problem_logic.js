@@ -1,6 +1,7 @@
 var mathjs = require('mathjs');
 var _ = require('underscore');
 var async = require('async');
+var config = require('../config/serverconfig.js');
 var mathstuff = {};
 
 mathstuff.createProblem = function(problem_set, seed) {
@@ -73,8 +74,6 @@ mathstuff.instantiate = function (db, arg2, callback) {
   return false;
 }
 function instantiateFromProblemUUIDs(db, uuids, finalCallback) {
-  if (_.isFunction(finalCallback)) console.log("finalCallback is function");
-  else console.log("finalCallback is " + typeof(finalCallback));
   var instantiatedTest = [];
   var collection = db.get('problemCollection');
   async.eachSeries(
@@ -93,17 +92,120 @@ function instantiateFromProblemUUIDs(db, uuids, finalCallback) {
   },function done() {
     finalCallback(instantiatedTest);
   });
-  /*
-  _.each(uuids, function (element) {
-    // TODO: project objects to limit function
-    collection.findById(element.uuid, function (error, problem) {
-      if (error) console.log('instantiate(): error: ' + error);
-      else {
-          instantiatedTest.push(setOne(problem));
-      }
-    });
-  });*/
-  //return instantiatedTest;
 }
+/*
+  Expects a quiz object: 
+  {
+    (optional) title: string (possibly empty)
+    problems: [
+      {uuid: ...},
+      ...
+    ]
+  }
+*/
+/*
+  Expects a quiz object (see verifyQuiz()) and a db handle.
+  errorCallback(error): error is an error message as a string
+*/
+mathstuff.insertQuiz = function (quiz, db, successCallback, errorCallback) {
+  mathstuff.verifyQuiz(quiz, db,
+    function () {
+      // At this point we have a valid quiz object. Time to insert into db.
+      // Question: perhaps better to flatten problem array to array of id's?
+      // Would make find() easier
+      var flattenedProblems = [];
+      _.each(quiz.problems, function (problem) {
+        flattenedProblems.push(problem.uuid);
+      });
+      var newQuiz = {
+        title: quiz.title, 
+        problems: flattenedProblems,
+        insertionDate: new Date()
+      };
+      var collection = db.get('quizCollection');
+      collection.insert(newQuiz, function (err, doc) {
+        if (err) errorCallback('Failed inserting quiz');
+        else { 
+          console.log('Successfully inserted quiz:');
+          console.log(JSON.stringify(doc));
+          successCallback();
+        }
+      });
+    },
+    errorCallback);
+}
+mathstuff.verifyQuiz = function (quiz, db, successCallback, errorCallback) {
+  if (!_.isObject(quiz)) {
+    errorCallback('Expected quiz to be object');
+    return;
+  }
+  if (_.has(quiz, 'title') && 
+      _.isString(quiz.title) &&
+      (quiz.title.length > config.MAX_TITLE_LENGTH)) {
+    errorCallback('Quiz title too long.');
+    return;
+  }
+  if (!_.has(quiz, 'problems')) {
+    errorCallback('Missing quiz.problems element');
+    return;
+  }
+  mathstuff.verifyQuizProblems(quiz.problems, db, function (error) {
+    if (!error) successCallback();
+    else errorCallback(error);
+    return;
+  });
+}
+mathstuff.verifyQuizProblems = function(problems, db, callback) {
+// Make sure the data is an array of strings
+  if (!_.isArray(problems)) {
+    callback('Expected problems to be array');
+    return;
+  }
 
+  // Don't allow empty tests
+  if (problems.length < 1) {
+    callback('Expected problems to have at least one element');
+    return;
+  }
+
+  // Don't let through absurdely large tests
+  if (problems.length > config.MAX_PROBLEM_COUNT) {
+    callback('Expected problems to be MAX_PROBLEM_COUNT or less');
+    return;
+  }
+
+  var allCorrectStrings = true;
+  _.each(problems, function (problem) {
+    if (!allCorrectStrings) return;
+
+    if (!_.isObject(problem)) allCorrectStrings = false;
+    else if (!_.has(problem, 'uuid')) allCorrectStrings = false;
+    else if (!_.isString(problem.uuid)) allCorrectStrings = false;
+    else if (problem.uuid.length != 24) allCorrectStrings = false;
+  });
+  if (!allCorrectStrings) {
+    callback('One or more elements in problems caused an error.');
+    return;
+  }
+  // TODO: Check that uuids exist in db
+  var allUUIDsFound = true;
+  var collection = db.get('problemCollection');
+  async.eachSeries(
+    problems, 
+    function iterator(problem, callback) {
+      collection.findById(problem.uuid, function (error, problem) {
+        if (error) {
+          allUUIDsFound = false;
+          console.log('instantiate(): error: ' + error);
+          callback(error);
+        } else {
+          callback(null);
+        }
+      });
+  },function done() {
+    if (!allUUIDsFound) {
+      callback('At least one problem when looking up uuids in db');
+    } else callback();
+  });
+}
 module.exports = mathstuff;
