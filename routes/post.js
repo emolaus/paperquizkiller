@@ -27,7 +27,7 @@ router.post('/createQuiz', function (req, res, next) {
 
   mathStuff.insertQuiz(req.body, req.db,
     function successCallback() {
-      res.send('Tadaaaa!');
+      res.send('success');
     },
     function errorCallback(error) {
       res.status(400).send(error);

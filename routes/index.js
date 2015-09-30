@@ -38,6 +38,14 @@ router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, 
 
 });
 
+router.get('/createQuiz', function (req, res) {
+  res.sendFile('public/tryit.html', {root: __dirname + "/.."});
+});
+
+router.get('/distributeQuiz', function (req, res) {
+  res.sendFile('public/distributeQuiz.html', {root: __dirname + "/.."});
+});
+
 /*
   Build a mongo query from an object of tags: {tag1: "...", tag2: ... tag6: "..."}
   With multiple tags given, the query should be an AND operation

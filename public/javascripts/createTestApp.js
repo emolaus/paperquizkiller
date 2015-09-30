@@ -1,6 +1,6 @@
 (function () { 
   var app = angular.module('createTest', []);
-  app.controller('MainController', ['$scope', '$http', '$rootScope',function ($scope, $http, $rootScope){
+  app.controller('MainController', ['$scope', '$http', '$rootScope','$window',function ($scope, $http, $rootScope, $window){
     $scope.quiz = {};
     $scope.quiz.problems = [];
     $scope.availableProblems = [];
@@ -55,7 +55,7 @@
       // What if quiz already exists? Update not create.
       $http.post('createQuiz', $scope.quiz).then(
         function successCallback(response) {
-          console.log(response);
+          $window.location.href = '/distributeQuiz';
         },
         function errorCallback(response) {
           console.log(response);
