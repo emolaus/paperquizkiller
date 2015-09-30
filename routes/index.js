@@ -21,6 +21,7 @@ router.get('/browse', function (req, res) {
 router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, res, next) {
   var db = req.db;
   var math = db.get('problemCollection');
+  console.log(JSON.stringify(req.params));
   var query = makeQuery(req.params);
   console.log(JSON.stringify(query));
   var promise = math.find(query, {limit: 10}, function () {});/*(err, doc) {
@@ -37,16 +38,27 @@ router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, 
 
 });
 
+/*
+  Build a mongo query from an object of tags: {tag1: "...", tag2: ... tag6: "..."}
+  With multiple tags given, the query should be an AND operation
+  to narrow down search results.
+*/
 function makeQuery(tags) {
-  var query = {};
-  if (_.isUndefined(tags.tag1)) return query;
-
-  query.tags = {$in: []};
+  // No tags?
+  if (_.isUndefined(tags.tag1)) 
+    return {};
+  
+  // One tag?
+  if (_.isUndefined(tags.tag2)) 
+    return { tags: {$in: [tags.tag1]}};
+  
+  var query = {$and: []};
   
   _.each(tags, function (value) {
     if (!value) return;
-    query.tags.$in.push(value);
+    query.$and.push({tags: {$in: [value]}});
   });
+  console.log(query);
   return query;
 
 }
