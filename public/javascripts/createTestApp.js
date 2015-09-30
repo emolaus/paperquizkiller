@@ -4,7 +4,7 @@
     $scope.quiz = {};
     $scope.quiz.problems = [];
     $scope.availableProblems = [];
-    $scope.quiz.title = 'Arithmetic test 2';
+    $scope.quiz.title = 'Title';
     $scope.tagString = "";
 
     $scope.preview = function () {
