@@ -319,6 +319,8 @@ mathstuff.instantiateQuiz = function (uuid, count, db, successCallback, errorCal
 /*
   successCallback(doc)
   errorCallback(errorString)
+
+  TODO: could just be called getQuiz since it returns the found quiz
 */
 mathstuff.verifyQuizExists = function(uuid, db, successCallback, errorCallback) {
   // Sanitize data
@@ -333,6 +335,24 @@ mathstuff.verifyQuizExists = function(uuid, db, successCallback, errorCallback) 
     else if (doc) successCallback(doc);
     else errorCallback('Quiz not found. No error given.');
   });
+}
+/*
+  fetch a quiz instance from quizInstanceCollection
+*/
+mathstuff.getQuizInstance = function (uuid, db, successCallback, errorCallback) {
+  // Sanitize data
+  if (!verifyUUIDFormat(uuid)) {
+    errorCallback('Invalid quiz instance uuid');
+    return;
+  }
+  // Check so that uuid exists in db
+  var collection = db.get('quizInstanceCollection');
+  collection.findById(uuid,function (err, doc) {
+    if (err) errorCallback('Quiz not found in db.');
+    else if (doc) successCallback(doc);
+    else errorCallback('Quiz instance not found. No error given.');
+  });
+
 }
 /* Check that argument is string of length 24 with correct characters */
 function verifyUUIDFormat(possiblyUUID) {

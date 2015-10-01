@@ -26,9 +26,23 @@ router.get('/createQuiz', function (req, res) {
 });
 
 router.get('/distributeQuiz', function (req, res) {
-  console.log('Cookies:');
-  console.log(JSON.stringify(req.cookies));
   res.sendFile('public/distributeQuiz.html', {root: __dirname + "/.."});
+});
+/*
+This presents the quiz to the student.
+*/
+router.get('/quiz/:uuid', function (req, res, next) {
+  console.log('route /quiz/:uuid');
+  console.log(req.params);
+  mathstuff.getQuizInstance(
+    req.params.uuid, 
+    req.db, 
+    function successCallback(quizInstance) {
+      res.render('quizInstance', {test: quizInstance.problems, title: quizInstance.title});
+    }, 
+    function errorCallback (error) {
+      next();
+    });
 });
 
 /*
@@ -55,4 +69,5 @@ function makeQuery(tags) {
   return query;
 
 }
+
 module.exports = router;

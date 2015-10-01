@@ -13,7 +13,7 @@ router.post('/preview', function(req, res, next) {
     req.db, 
     data.problems, 
     function (instantiatedTest) {
-      htmlRenderedTest = res.render('test', {test: instantiatedTest, title: data.title});
+      res.render('test', {test: instantiatedTest, title: data.title});
     },
     function error(error) {
       res.status(400).send('error in preview: ' + error);

@@ -1,0 +1,22 @@
+doctype html
+head(lang='en')
+  title Quiz
+  link(href='../stylesheets/bootstrap.min.css', rel='stylesheet')
+body
+  include test.jade
+  button(id='goButton', class='btn btn-default col-sm-1') Submit
+  script(type='text/x-mathjax-config').
+    MathJax.Hub.Config({
+      extensions: ['tex2jax.js'],
+      jax: ['input/TeX', 'output/HTML-CSS'],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$'], ['\\[','\\]'] ],
+        processEscapes: true
+      },
+      'HTML-CSS': { 
+        availableFonts: ['TeX'] ,
+        scale: 120
+      }
+    });
+  script(type='text/javascript', src='../libs/mathjax/MathJax.js')
