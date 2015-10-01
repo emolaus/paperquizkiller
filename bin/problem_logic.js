@@ -126,9 +126,7 @@ mathstuff.insertQuiz = function (quiz, db, successCallback, errorCallback) {
       collection.insert(newQuiz, function (err, doc) {
         if (err) errorCallback('Failed inserting quiz');
         else { 
-          console.log('Successfully inserted quiz:');
-          console.log(JSON.stringify(doc));
-          successCallback();
+          successCallback(doc._id);
         }
       });
     },

@@ -26,7 +26,13 @@ router.post('/createQuiz', function (req, res, next) {
   }
 
   mathStuff.insertQuiz(req.body, req.db,
-    function successCallback() {
+    function successCallback(quizUuid) {
+      var allTests = [];
+      if (req.cookies.allTests) allTests = req.cookies.allTests;
+      allTests.push(quizUuid);
+      var cookieData = {allTests: allTests, currentTest: quizUuid};
+      res.cookie('quizzes', cookieData, {maxAge: 1000*3600*24*31});
+  
       res.send('success');
     },
     function errorCallback(error) {

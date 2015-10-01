@@ -21,9 +21,7 @@ router.get('/browse', function (req, res) {
 router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, res, next) {
   var db = req.db;
   var math = db.get('problemCollection');
-  console.log(JSON.stringify(req.params));
   var query = makeQuery(req.params);
-  console.log(JSON.stringify(query));
   var promise = math.find(query, {limit: 10}, function () {});/*(err, doc) {
     if (err) console.log("err: " + err);
     else res.send(doc);
@@ -43,6 +41,8 @@ router.get('/createQuiz', function (req, res) {
 });
 
 router.get('/distributeQuiz', function (req, res) {
+  console.log('Cookies:');
+  console.log(JSON.stringify(req.cookies));
   res.sendFile('public/distributeQuiz.html', {root: __dirname + "/.."});
 });
 
