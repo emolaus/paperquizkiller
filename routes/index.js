@@ -2,21 +2,6 @@ var express = require('express');
 var router = express.Router();
 var mathstuff = require('../bin/problem_logic.js');
 var _ = require('underscore');
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-router.get('/browse', function (req, res) {
-    var db = req.db;
-    var collection = db.get('problemCollection');
-    collection.find({},{}, function (e, problem_set){
-        mathstuff.createProblem(problem_set);
-        res.render('browse', { 
-        problem_list: problem_set, title: 'browse'
-      });    
-    });
-});
 
 router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, res, next) {
   var db = req.db;
