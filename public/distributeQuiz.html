@@ -1,5 +1,5 @@
  <!DOCTYPE html>
-  <html lang="en" ng-app="createTest">
+  <html lang="en" ng-app="distributeQuiz">
 
   <head>
 
@@ -19,14 +19,14 @@
     <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="stylesheets/tryit.css" rel="stylesheet">
   </head>
-  <body>
+  <body ng-controller="MainController">
     <h1>2. Send it out</h1>
     <img id="ornament" src="images/ornament.png">
     <form class="form-horizontal">
       <div class="form-group">
         <label for="inputStudentCount" class="col-sm-2 control-label">Nr. of students:</label>
         <div class="col-sm-2">
-          <input type="number" class="form-control" id="inputStudentCount">
+          <input type="number" class="form-control" id="inputStudentCount" ng-model="instanceCount">
         </div>
       </div>
       <!-- Jobbigare än väntat att få igång bootstrap datetimepicker. Se
@@ -42,13 +42,15 @@
       </div>
       -->
       <div class="col-sm-2"></div>
-      <button id="goButton" class="btn btn-default col-sm-1" ng-click="done()">Go</button>
       
     </form>
+    <button id="goButton" class="btn btn-default col-sm-1" ng-click="instantiateQuizzes()">Go</button>
     <script src="javascripts/jquery.js"></script>
     <!-- För datetimepicker
     <script type="text/javascript" src="libs/moment.min.js"></script>-->
     <script type= "text/javascript" src="javascripts/bootstrap.min.js"></script>
+    <script type= "text/javascript" src="javascripts/angular.js"></script>
+    <script type= "text/javascript" src="javascripts/distributeQuizApp.js"></script>
     <!-- För datetimepicker
     <script type="text/javascript">
       $(function () {
