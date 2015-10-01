@@ -270,7 +270,7 @@ mathstuff.instantiateQuiz = function (uuid, count, db, successCallback, errorCal
                 // Replace this with async.whilst
                 var countInstances = 0;
                 async.whilst(
-                  function () {return countInstances++ < count},
+                  function () {return countInstances < count},
                   function (callback) {
                     console.log('instantiating nr ' + countInstances);
                     mathstuff.instantiate(
@@ -280,6 +280,8 @@ mathstuff.instantiateQuiz = function (uuid, count, db, successCallback, errorCal
                         instances.push(
                         {
                           quizId: uuid,
+                          title: quiz.title,
+                          index: countInstances++,
                           instanceIndex: instanceIndex,
                           problems: problems
                         });
