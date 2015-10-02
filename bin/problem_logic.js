@@ -399,6 +399,25 @@ mathstuff.getAllQuizInstances = function (uuid, instanceIndex, db, successCallba
     errorCallback
     );
 }
+mathstuff.submitQuiz = function(uuid, answers, db, successCallback, errorCallback) {
+  if (!_.isArray(answers)) {
+    errorCallback('submit quiz failed. bad arguments. ');
+    return;
+  }
+  mathstuff.getQuizInstance(
+    uuid, 
+    db, 
+    function foundQuiz(quiz) {
+      // Sanity check: answers has same length as quiz problems.
+      if (!_.has(quiz, 'problems')) errorCallback('db error. quiz has no problem set. ');
+      else if (!_.isArray(quiz.problems)) errorCallback('db error. quiz problem set corrupt.');
+      else if (quiz.problems.length != answers.length) errorCallback('submit quiz failed. answers array didn\'t match quiz problem set.');
+      else {
+        // TODO: check answers, collect result, and save to db 
+      }
+    }, 
+    errorCallback);
+}
 /* Check that argument is string of length 24 with correct characters */
 function verifyUUIDFormat(possiblyUUID) {
   if (!_.isString(possiblyUUID)) return false;
