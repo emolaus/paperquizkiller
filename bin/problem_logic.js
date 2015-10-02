@@ -226,6 +226,7 @@ mathstuff.verifyQuizProblems = function(problems, db, callback) {
 }
 /*
   Expects the uuid of the template quiz and the number of instantiations
+  Returns successCallback({success: true, quizId: uuid, instanceIndex: instanceIndex});
 */
 mathstuff.instantiateQuiz = function (uuid, count, db, successCallback, errorCallback) {
   // Sanitize data
@@ -319,8 +320,8 @@ mathstuff.instantiateQuiz = function (uuid, count, db, successCallback, errorCal
   );
 }
 /*
-  successCallback(doc)
-  errorCallback(errorString)
+  successCallback(quiz object)
+  errorCallback(error string)
 
   TODO: could just be called getQuiz since it returns the found quiz
 */
@@ -354,7 +355,47 @@ mathstuff.getQuizInstance = function (uuid, db, successCallback, errorCallback) 
     else if (doc) successCallback(doc);
     else errorCallback('Quiz instance not found. No error given.');
   });
+}
+/* 
+  Requires the uuid of the original/template quiz and index of instance (index in quiz.instances array)
+  Returns meta data of quiz instances, i.e. all data execept actual questions.
+*/
+mathstuff.getAllQuizInstances = function (uuid, instanceIndex, db, successCallback, errorCallback) {
+  // Instance index should be a string representing a number. Check and clean.
+  if (!_.isString(instanceIndex)) {
+    errorCallback('Wrong instanceIndex');
+    return;
+  }
+  instanceIndex = parseInt(instanceIndex);
+  if (isNaN(instanceIndex)) {
+    errorCallback('Wrong instanceIndex');
+    return;
+  }
 
+  // Check existence of original quiz. uuid is checked in verifyQuizExists so no need to do it here
+  mathstuff.verifyQuizExists(
+    uuid,
+    db, 
+    function quizFound(quiz) {
+      // Original quiz exists. Look up all instances that match the uuid and instanceIndex
+      // Those fields are called quizId and instanceIndex.
+      var query = {quizId: uuid, instanceIndex: instanceIndex};
+      console.log(JSON.stringify(query))
+      
+      var collection = db.get('quizInstanceCollection');
+      collection.find(query, function (err, docs) {
+        if (err) {
+          console.error('getAllQuizInstances: error. ' + err);
+          errorCallback('Failed fetching quiz instances.');
+        } else if (docs) {
+          successCallback(docs);
+        } else {
+          errorCallback('No quiz instances found.');
+        }
+      });
+    },
+    errorCallback
+    );
 }
 /* Check that argument is string of length 24 with correct characters */
 function verifyUUIDFormat(possiblyUUID) {

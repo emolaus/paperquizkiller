@@ -3,6 +3,56 @@ var router = express.Router();
 var mathstuff = require('../bin/problem_logic.js');
 var _ = require('underscore');
 
+router.get('/createQuiz', function (req, res) {
+  res.sendFile('public/tryit.html', {root: __dirname + "/.."});
+});
+/*
+router.get('/distributeQuiz/:uuid', function (req, res) {
+  console.log('dirname: ' + __dirname);
+  res.sendFile('public/distributeQuiz.html', {root: __dirname + "/.."});
+});*/
+/*
+This serves a html formatted quiz to the student.
+*/
+router.get('/quiz/:uuid', function (req, res, next) {
+  console.log('route /quiz/:uuid');
+  console.log(req.params);
+  mathstuff.getQuizInstance(
+    req.params.uuid, 
+    req.db, 
+    function successCallback(quizInstance) {
+      res.render('quizInstance', {test: quizInstance.problems, title: quizInstance.title});
+    }, 
+    function errorCallback (error) {
+      next();
+    });
+});
+
+router.get('/quizInstances/:uuid/:instanceIndex', function (req, res) {
+  // Fetch all data except problem list from db
+  mathstuff.getAllQuizInstances(
+    req.params.uuid, 
+    req.params.instanceIndex, 
+    req.db,
+    function successCallback(quizInstances) {
+      // A bunch of data arrived. Clean and send necessary data.
+      var host = req.get('host');
+      var response = _.map(quizInstances, function (quizInstance) {
+        return {
+          index: quizInstance.index,
+          url: host + '/quiz/' + quizInstance._id
+        }
+      }); 
+
+      res.send(response);
+    },
+    function errorCallback(error) {
+      res.status(400).send(error);
+    });
+});
+
+// OBS kan använda /problems?tag1=lala&tag2=kaka
+// och req.query
 router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, res, next) {
   var db = req.db;
   var math = db.get('problemCollection');
@@ -19,30 +69,6 @@ router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, 
     res.send(docs);
   });
 
-});
-
-router.get('/createQuiz', function (req, res) {
-  res.sendFile('public/tryit.html', {root: __dirname + "/.."});
-});
-
-router.get('/distributeQuiz', function (req, res) {
-  res.sendFile('public/distributeQuiz.html', {root: __dirname + "/.."});
-});
-/*
-This presents the quiz to the student.
-*/
-router.get('/quiz/:uuid', function (req, res, next) {
-  console.log('route /quiz/:uuid');
-  console.log(req.params);
-  mathstuff.getQuizInstance(
-    req.params.uuid, 
-    req.db, 
-    function successCallback(quizInstance) {
-      res.render('quizInstance', {test: quizInstance.problems, title: quizInstance.title});
-    }, 
-    function errorCallback (error) {
-      next();
-    });
 });
 
 /*

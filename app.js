@@ -13,6 +13,7 @@ insertDefaultData(db);
 
 var routes = require('./routes/index');
 var postRoutes = require('./routes/post');
+var distributeQuizRoute = require('./routes/distributeQuiz');
 //var users = require('./routes/users');
 //var api = require('./routes/api');
 
@@ -39,6 +40,8 @@ app.use(function(req,res,next){
 
 app.use('/', routes);
 app.use('/', postRoutes);
+app.use('/distributeQuiz', distributeQuizRoute);
+
 //app.use('/problems', api);
 
 // catch 404 and forward to error handler

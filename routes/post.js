@@ -39,7 +39,7 @@ router.post('/createQuiz', function (req, res) {
       var cookieData = {allTests: allTests, currentTest: quizUuid};
       res.cookie('quizzes', cookieData, {maxAge: 1000*3600*24*31});
   
-      res.send('success');
+      res.send(quizUuid);
     },
     function errorCallback(error) {
       res.status(400).send(error);
@@ -66,12 +66,14 @@ router.post('/instantiateQuiz', function (req, res) {
     res.status(400).send('Data missing');
     return; 
   }
-
+  var quizzesCookie = req.cookies.quizzes;
   mathstuff.instantiateQuiz(
-    req.cookies.quizzes.currentTest,
+    quizzesCookie.currentTest,
     req.body.instanceCount,
     req.db,
     function successCallback(data) {
+      quizzesCookie.instanceIndex = data.instanceIndex;
+      res.cookie('quizzes', quizzesCookie, {maxAge: 1000*3600*24*31});
       res.send(data);
     },
     function errorCallback(error) {

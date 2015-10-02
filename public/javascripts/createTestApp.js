@@ -54,8 +54,8 @@
       // TODO call API createTest
       // What if quiz already exists? Update not create.
       $http.post('createQuiz', $scope.quiz).then(
-        function successCallback(response) {
-          $window.location.href = '/distributeQuiz';
+        function successCallback(uuid) {
+          $window.location.href = '/distributeQuiz/' + uuid;
         },
         function errorCallback(response) {
           console.log(response);
