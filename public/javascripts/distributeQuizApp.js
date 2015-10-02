@@ -3,6 +3,8 @@
 
   app.controller('MainController', ['$scope', '$http', function ($scope, $http){
     $scope.instanceCount = 1;
+    $scope.showForm = true;
+
     $scope.instantiateQuizzes = function () {
       console.log($scope.instanceCount);
 
@@ -10,6 +12,10 @@
         function successCallback(response) {
           console.log('Success!');
           console.log(response);
+          // TODO At this point we have quiz instance info in 
+          // response.data: {quizId: uuid, instanceIndex: int}
+          // Fetch all quiz instances and populate view
+          fetchInstancesAndPopulateView(response.data.quizId, response.data.instanceIndex);
         },
         function errorCallback(response) {
           console.log('error');
@@ -18,5 +24,29 @@
 
       );
     }
+    var fetchInstancesAndPopulateView = function(quizInstanceUUID, instanceIndex) {
+      $http.get('/quizInstances/' + quizInstanceUUID + '/' + instanceIndex).then(
+        function successCallback(response) {
+          console.log(response);
+          $('#createForm').hide();
+          $('#goButton').hide();
+          // Generate html here in angular controller
+          var html = headerAndDisclaimer;
+          angular.forEach(response.data, function (quizDescription) {
+            html += '<div class="row"><div class="span2">' + quizDescription.index + 
+                    '</div><div class="span8"><a href="' + quizDescription.url +'">' + quizDescription.url +
+                    '</a></div></div>';
+          });
+          $('#quizList').html(html);
+        },
+        function errorCallback(response) {
+          console.log();
+        }
+      );
+    }
+    var headerAndDisclaimer = '<h3>Your quizzes are ready to be sent out to the students.</h3><br> \
+            <p>Please note that this is a demo version. These tests are real and functioning but we do not save any names or email addresses on the server. \
+            It\'s up to you to take note which student received which url.<br>';
+
   }]);
 })();

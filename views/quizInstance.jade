@@ -4,7 +4,7 @@ head(lang='en')
   link(href='../stylesheets/bootstrap.min.css', rel='stylesheet')
 body
   include test.jade
-  button(id='goButton', class='btn btn-default col-sm-1') Submit
+  button(id='submitButton', type="text", class='btn btn-default col-sm-1', ng-click="submit()") Submit
   script(type='text/x-mathjax-config').
     MathJax.Hub.Config({
       extensions: ['tex2jax.js'],
@@ -20,3 +20,7 @@ body
       }
     });
   script(type='text/javascript', src='../libs/mathjax/MathJax.js')
+  script(type="text/javascript", src="javascripts/angular.js")
+  script(type="text/javascript", src="javascripts/distributeQuizApp.js")
+  script(type="text/javascript", src="javascripts/quizInstance.js")
+

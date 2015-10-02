@@ -1,5 +1,6 @@
 h2 #{title}
-each problem, index in test
-  p <b>#{index+1}.</b> &nbsp; #{ "\\(" + problem.text + "\\)"}
-  p <b>Answer: </b> 
-  p <input type="text" class="form-control answerInput" data-index="{index+1}">
+form
+  each problem, index in test
+    p <b>#{index+1}.</b> &nbsp; #{ "\\(" + problem.text + "\\)"}
+    p <b>Answer: </b> 
+    p <input type="text" class="form-control answerInput" data-index="{index+1}", ng-model="answers[#{index}]">

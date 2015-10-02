@@ -6,6 +6,12 @@ var _ = require('underscore');
 router.get('/createQuiz', function (req, res) {
   res.sendFile('public/tryit.html', {root: __dirname + "/.."});
 });
+router.get('/distributeQuiz/:uuid', function (req, res) {
+  //console.log('dirname: ' + __dirname); // Outputs /home/mattiasolausson/NodeWorkspace/nodetest1/routes
+  //console.log(req.params);
+  res.render('distributeQuiz');
+  //res.sendFile('public/distributeQuiz.html', {root: __dirname + "/.."});
+});
 /*
 router.get('/distributeQuiz/:uuid', function (req, res) {
   console.log('dirname: ' + __dirname);
@@ -15,8 +21,6 @@ router.get('/distributeQuiz/:uuid', function (req, res) {
 This serves a html formatted quiz to the student.
 */
 router.get('/quiz/:uuid', function (req, res, next) {
-  console.log('route /quiz/:uuid');
-  console.log(req.params);
   mathstuff.getQuizInstance(
     req.params.uuid, 
     req.db, 
@@ -47,6 +51,7 @@ router.get('/quizInstances/:uuid/:instanceIndex', function (req, res) {
       res.send(response);
     },
     function errorCallback(error) {
+      console.log('/quizInstances/:uuid/:instanceIndex - failed fetching quiz instances.' );
       res.status(400).send(error);
     });
 });

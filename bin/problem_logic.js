@@ -145,8 +145,10 @@ mathstuff.insertQuiz = function (quiz, db, successCallback, errorCallback) {
       var collection = db.get('quizCollection');
       collection.insert(newQuiz, function (err, doc) {
         if (err) errorCallback('Failed inserting quiz');
-        else { 
-          successCallback(doc._id);
+        else if (doc) { 
+          successCallback(doc._id.valueOf());
+        } else {
+          errorCallback('Failed creating quiz');
         }
       });
     },
@@ -282,7 +284,7 @@ mathstuff.instantiateQuiz = function (uuid, count, db, successCallback, errorCal
                         {
                           quizId: uuid,
                           title: quiz.title,
-                          index: countInstances++,
+                          index: ++countInstances, // Looks better to start at 1
                           instanceIndex: instanceIndex,
                           problems: problems
                         });

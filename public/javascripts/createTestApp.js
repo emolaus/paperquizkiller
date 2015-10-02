@@ -1,30 +1,13 @@
 (function () { 
   var app = angular.module('createTest', []);
-  app.controller('MainController', ['$scope', '$http', '$rootScope','$window',function ($scope, $http, $rootScope, $window){
+  app.controller('MainController', ['$scope', '$http', '$rootScope','$window', function ($scope, $http, $rootScope, $window){
     $scope.quiz = {};
     $scope.quiz.problems = [];
     $scope.availableProblems = [];
     $scope.quiz.title = 'Title';
     $scope.tagString = "";
 
-    $scope.preview = function () {
-      // THis next line isn't great, would prefer two-way binding
-      $scope.quiz.title = $('#testHeading').html();
-      $http.post('/preview', $scope.quiz).then(
-        function successCallback(response) {
 
-          $('#modalPreviewBody').html(response.data); 
-          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-          $('#modalPreview').modal('show');
-
-        },
-        function errorCallback(response) {
-          
-          console.log('Error. ' + JSON.stringify(response));
-        
-        }
-      );
-    }
     $scope.add = function (text, uuid) {
       $scope.quiz.problems.push({text: text, uuid: uuid});
     }
@@ -51,17 +34,38 @@
 
     // Button click "done"
     $scope.done = function () {
+      console.log('Click');
       // TODO call API createTest
       // What if quiz already exists? Update not create.
       $http.post('createQuiz', $scope.quiz).then(
-        function successCallback(uuid) {
-          $window.location.href = '/distributeQuiz/' + uuid;
+        function successCallback(response) {
+          $window.location.href = '/distributeQuiz/' + response.data;
         },
         function errorCallback(response) {
           console.log(response);
         }
 
       );
+    }
+    $scope.preview = function () {
+      // THis next line isn't great, would prefer two-way binding
+      $scope.quiz.title = $('#testHeading').html();
+      $http.post('/preview', $scope.quiz).then(
+        function successCallback(response) {
+
+          $('#modalPreviewBody').html(response.data); 
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+          $('#modalPreview').modal('show');
+        },
+        function errorCallback(response) {
+          
+          console.log('Error. ' + JSON.stringify(response));
+        
+        }
+      );
+    }
+    $scope.submit = function () {
+      console.log("Clicked submit");
     }
   }]);
 

@@ -13,7 +13,7 @@ insertDefaultData(db);
 
 var routes = require('./routes/index');
 var postRoutes = require('./routes/post');
-var distributeQuizRoute = require('./routes/distributeQuiz');
+//var distributeQuizRoute = require('./routes/distributeQuiz');
 //var users = require('./routes/users');
 //var api = require('./routes/api');
 
@@ -38,9 +38,12 @@ app.use(function(req,res,next){
     next();
 });
 
+// These two lines are getting messy... TODO figure out the real way to do it.
+app.use('/', express.static(__dirname + "/public"));
+app.use('/distributeQuiz', express.static(__dirname + "/public"));
+
 app.use('/', routes);
 app.use('/', postRoutes);
-app.use('/distributeQuiz', distributeQuizRoute);
 
 //app.use('/problems', api);
 
