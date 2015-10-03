@@ -38,11 +38,7 @@ app.use(function(req,res,next){
     next();
 });
 
-// These two lines are getting messy... TODO figure out the real way to do it.
 app.use('/', express.static(__dirname + "/public"));
-app.use('/distributeQuiz', express.static(__dirname + "/public"));
-app.use('/quiz', express.static(__dirname + "/public"));
-
 app.use('/', routes);
 app.use('/', postRoutes);
 

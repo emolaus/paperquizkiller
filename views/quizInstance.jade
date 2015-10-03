@@ -2,7 +2,7 @@ doctype html
 html(lang='en',ng-app='quizInstance', ng-init='problemCount = #{problemCount}; uuid = "#{uuid}"')
   head
     title Quiz
-    link(href='../stylesheets/bootstrap.min.css', rel='stylesheet')
+    link(href='/../stylesheets/bootstrap.min.css', rel='stylesheet')
   body(ng-controller='MainController')
     include test.jade
     button(id='submitButton', class='btn btn-default col-sm-1', ng-click="submit()") Submit
@@ -20,8 +20,8 @@ html(lang='en',ng-app='quizInstance', ng-init='problemCount = #{problemCount}; u
           scale: 120
         }
       });
-    script(type='text/javascript', src='../libs/mathjax/MathJax.js')
-    script(type="text/javascript", src="javascripts/angular.js")
-    script(type="text/javascript", src="javascripts/distributeQuizApp.js")
-    script(type="text/javascript", src="javascripts/quizInstance.js")
+    script(type='text/javascript', src='/../libs/mathjax/MathJax.js')
+    script(type="text/javascript", src="/javascripts/angular.js")
+    script(type="text/javascript", src="/javascripts/distributeQuizApp.js")
+    script(type="text/javascript", src="/javascripts/quizInstance.js")
 

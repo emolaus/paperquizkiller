@@ -3,20 +3,17 @@ var router = express.Router();
 var mathstuff = require('../bin/problem_logic.js');
 var _ = require('underscore');
 
+/*
+These two caused some serious headache. Turns out you need absolute paths
+in html paths. wrong: "scripts/myscript.js" right: "/scripts/myscript.js"
+*/
 router.get('/createQuiz', function (req, res) {
   res.sendFile('public/tryit.html', {root: __dirname + "/.."});
 });
 router.get('/distributeQuiz/:uuid', function (req, res) {
-  //console.log('dirname: ' + __dirname); // Outputs /home/mattiasolausson/NodeWorkspace/nodetest1/routes
-  //console.log(req.params);
   res.render('distributeQuiz');
-  //res.sendFile('public/distributeQuiz.html', {root: __dirname + "/.."});
 });
-/*
-router.get('/distributeQuiz/:uuid', function (req, res) {
-  console.log('dirname: ' + __dirname);
-  res.sendFile('public/distributeQuiz.html', {root: __dirname + "/.."});
-});*/
+
 /*
 This serves a html formatted quiz to the student.
 */
