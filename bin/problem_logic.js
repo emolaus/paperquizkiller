@@ -21,24 +21,43 @@ mathstuff.createProblem = function(problem_set, seed) {
   }
 
 }
+/* Instantiate a problem. The returning object has elements
+- problemId (uuid)
+- parameters {A: 3, B: 4}
+- solution (string if )
+ */
+
 function setOne(problem, seed) {
   // for each parameter
     // while "_" + parameter found in problem text
     // replace "_" + parameter with randomized value
   var instantiatedProblem = {};
   instantiatedProblem.problemId = problem._id;
+  // In case the solution is hard coded. 
   var newText = problem.text;
-  for (var param in problem.parameters){
-    if (problem.parameters.hasOwnProperty(param)) {
+  var solution = problem.solution;
+  if (_.has(problem, 'parameters')) {
+    instantiatedProblem.parameters = {};
+    for (var param in problem.parameters){
+      if (problem.parameters.hasOwnProperty(param)) {
         paramObj = problem.parameters[param];
         var setVal = setParameter(paramObj, seed);
         //problem.parameters[param].instantiated = setVal;
         while (newText.search("_" + param) > -1) {
           newText = newText.replace("_" + param, setVal);
+          solution = solution.replace("_" + param, setVal);
         }
+        instantiatedProblem.parameters[param] = setVal;
+      }
     }
+    try { solution = mathjs.eval(solution); } 
+    catch (e) {
+      console.error('Failed calculating error at problem_logic.js. Problem: ' + problem._id);
+    }
+    //solution = calculateSolution();
   }
   instantiatedProblem.text = newText;  
+  instantiatedProblem.solution = solution; 
   return instantiatedProblem;
 }
 
@@ -290,9 +309,9 @@ mathstuff.instantiateQuiz = function (uuid, count, db, successCallback, errorCal
                         });
                         callback();
                       }, 
-                      function error(error) {
+                      function error(e) {
                         someErrorOccurred = true;
-                        console.error(error);
+                        console.error(e);
                         callback();
                       } 
                     );
@@ -399,6 +418,17 @@ mathstuff.getAllQuizInstances = function (uuid, instanceIndex, db, successCallba
     errorCallback
     );
 }
+/* Check that argument is string of length 24 with correct characters */
+function verifyUUIDFormat(possiblyUUID) {
+  if (!_.isString(possiblyUUID)) return false;
+  if (possiblyUUID.length != 24) return false;
+  
+  // Check so that characters are correct
+  for (var i = 0; i < possiblyUUID.length; i++) {
+    if (_.indexOf('abcdef0123456789', possiblyUUID[i]) < 0) return false;
+  }
+  return true;
+}
 mathstuff.submitQuiz = function(uuid, answers, db, successCallback, errorCallback) {
   if (!_.isArray(answers)) {
     errorCallback('submit quiz failed. bad arguments. ');
@@ -413,20 +443,25 @@ mathstuff.submitQuiz = function(uuid, answers, db, successCallback, errorCallbac
       else if (!_.isArray(quiz.problems)) errorCallback('db error. quiz problem set corrupt.');
       else if (quiz.problems.length != answers.length) errorCallback('submit quiz failed. answers array didn\'t match quiz problem set.');
       else {
-        // TODO: check answers, collect result, and save to db 
+        // Save the result in lighter array to return to client
+        var resultArray = Array(quiz.problems.length);
+        for (var i = 0; i < answers.length; i++) {
+          quiz.problems[i].result = quiz.problems[i].solution == answers[i];
+          resultArray[i] = quiz.problems[i].result;
+        }       
+        var collection = db.get('quizInstanceCollection'); 
+        // TODO: DOESN'T UPDATE QUIZ!
+        collection.updateById(quiz.uuid, {problems: quiz.problems}, function (error, doc) {
+          if (error) {
+            errorCallback('Failed inserting results to db');
+            console.error('Failed updating quiz instance ' + quiz.uuid + '. quiz object dump:');
+            console.error(JSON.stringify(quiz));
+          } 
+          else successCallback(resultArray);
+        });
       }
     }, 
     errorCallback);
 }
-/* Check that argument is string of length 24 with correct characters */
-function verifyUUIDFormat(possiblyUUID) {
-  if (!_.isString(possiblyUUID)) return false;
-  if (possiblyUUID.length != 24) return false;
-  
-  // Check so that characters are correct
-  for (var i = 0; i < possiblyUUID.length; i++) {
-    if (_.indexOf('abcdef0123456789', possiblyUUID[i]) < 0) return false;
-  }
-  return true;
-}
+
 module.exports = mathstuff;

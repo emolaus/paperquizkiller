@@ -27,11 +27,11 @@ function insertInto(db, collection, data) {
 }
 
 var problems = [{
-  text: '1+1=',
-  solution: '3',
+  text: '1+1',
+  solution: 2,
   tags: ['arithmetic', 'basic']
 }, {
-  text: '_A+_B=',
+  text: '_A+_B',
   solution: '_A+_B',
   tags: ['arithmetic', 'basic'],
   parameters: {
@@ -43,7 +43,7 @@ var problems = [{
     }
   }
 }, {
-  text: '_A-_B=',
+  text: '_A-_B',
   solution: '_A-_B',
   tags: ['arithmetic', 'basic'],
   parameters: {
@@ -55,7 +55,7 @@ var problems = [{
     }
   }
 }, {
-  text: '_A+(_B)=',
+  text: '_A+(_B)',
   solution: '_A+_B',
   tags: ['arithmetic'],
   parameters: {
@@ -67,7 +67,7 @@ var problems = [{
     }
   }
 }, {
-  text: '_A-(_B)=',
+  text: '_A-(_B)',
   solution: '_A-_B',
   tags: ['arithmetic'],
   parameters: {
