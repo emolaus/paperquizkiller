@@ -451,7 +451,9 @@ mathstuff.submitQuiz = function(uuid, answers, db, successCallback, errorCallbac
         }       
         var collection = db.get('quizInstanceCollection'); 
         // TODO: DOESN'T UPDATE QUIZ!
-        collection.updateById(quiz.uuid, {problems: quiz.problems}, function (error, doc) {
+        var uuid = quiz._id;
+        delete(quiz._id);
+        collection.updateById(uuid, quiz, function (error, doc) {
           if (error) {
             errorCallback('Failed inserting results to db');
             console.error('Failed updating quiz instance ' + quiz.uuid + '. quiz object dump:');
