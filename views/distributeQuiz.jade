@@ -14,13 +14,13 @@ head
 body(ng-controller="MainController")
   h1 2. Send it
   img(id="ornament", src="/images/ornament.png")
-  form(class="form-horizontal", id="createForm")
+  form(class="form-horizontal initialForm")
     .form-group
       label(for="inputStudentCount", class="col-sm-2 control-label") Nr. of students:
       .col-sm-2
         input(type="number", class="form-control", id="inputStudentCount", ng-model="instanceCount")
 
-  button(id="goButton", class="btn btn-default col-sm-1", ng-click="instantiateQuizzes()") Go 
+  button(class="btn btn-default col-sm-1 initialForm", ng-click="instantiateQuizzes()") Go 
   br
   div(class="row message")
     h3 Your quizzes are ready to be sent out to the students

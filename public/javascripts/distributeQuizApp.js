@@ -1,7 +1,7 @@
 (function () { 
   var app = angular.module('distributeQuiz', []);
 
-  app.controller('MainController', ['$scope', '$http', function ($scope, $http){
+  app.controller('MainController', ['$scope', '$http', '$window', function ($scope, $http, $window){
     $scope.instanceCount = 1;
     $scope.showForm = true;
 
@@ -27,9 +27,7 @@
     var fetchInstancesAndPopulateView = function(quizInstanceUUID, instanceIndex) {
       $http.get('/quizInstances/' + quizInstanceUUID + '/' + instanceIndex).then(
         function successCallback(response) {
-          console.log(response);
-          $('#createForm').hide();
-          $('#goButton').hide();
+          $('.initialForm').hide();
           $('.message').show();
           // Generate html here in angular controller
           var html = "";//headerAndDisclaimer;
@@ -44,6 +42,9 @@
           console.log();
         }
       );
+    }
+    $scope.goToDashboard = function () {
+      $window.location.href = "";
     }
   }]);
 })();
