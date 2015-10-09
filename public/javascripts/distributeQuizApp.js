@@ -30,8 +30,9 @@
           console.log(response);
           $('#createForm').hide();
           $('#goButton').hide();
+          $('.message').show();
           // Generate html here in angular controller
-          var html = headerAndDisclaimer;
+          var html = "";//headerAndDisclaimer;
           angular.forEach(response.data, function (quizDescription) {
             html += '<div class="row"><div class="span2">' + quizDescription.index + 
                     '</div><div class="span8"><a href="' + quizDescription.url +'">' + quizDescription.url +
@@ -44,9 +45,5 @@
         }
       );
     }
-    var headerAndDisclaimer = '<h3>Your quizzes are ready to be sent out to the students.</h3><br> \
-            <p>Please note that this is a demo version. These tests are real and functioning but we do not save any names or email addresses on the server. \
-            It\'s up to you to take note which student received which url.<br>';
-
   }]);
 })();

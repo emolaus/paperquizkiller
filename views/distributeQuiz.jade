@@ -9,6 +9,8 @@ head
   link(href="/font-awesome/css/font-awesome.min.css", rel="stylesheet", type="text/css")
   link(href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic",rel="stylesheet",type="text/css")
   link(href="/stylesheets/tryit.css", rel="stylesheet")
+  style.
+    .message {display: none;}
 body(ng-controller="MainController")
   h1 2. Send it
   img(id="ornament", src="/images/ornament.png")
@@ -19,6 +21,13 @@ body(ng-controller="MainController")
         input(type="number", class="form-control", id="inputStudentCount", ng-model="instanceCount")
 
   button(id="goButton", class="btn btn-default col-sm-1", ng-click="instantiateQuizzes()") Go 
+  br
+  div(class="row message")
+    h3 Your quizzes are ready to be sent out to the students
+    br
+    p Please note that this is a demo version. These tests are real and functioning but we do not save any names or email addresses on the server. It's up to you to take note which student received which url.
+    br
+    button(id="toDashboardButton", class="btn btn-default col-sm-2", ng-click="goToDashboard()") Go to my dashboard
   div(id="quizList")
   script(type="text/javascript", src="/javascripts/jquery.js")
   script(type="text/javascript", src="/javascripts/bootstrap.min.js")
