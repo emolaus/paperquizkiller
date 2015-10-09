@@ -11,6 +11,8 @@
         function success(response) {
           console.log('Success!');
           console.log(response);
+          window.location.reload();
+          //$window.location.href = '/quiz/' + response.data;
         },
         function error(response) {
           console.log('Error!');

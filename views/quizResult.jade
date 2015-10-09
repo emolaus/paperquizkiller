@@ -1,11 +1,14 @@
 doctype html
-html(lang='en',ng-app='quizInstance', ng-init='problemCount = #{problemCount}; uuid = "#{uuid}"')
+html(lang='en')
   head
-    title Quiz
+    title Quiz result
     link(href='/../stylesheets/bootstrap.min.css', rel='stylesheet')
   body(ng-controller='MainController')
-    include test.jade
-    button(id='submitButton', class='btn btn-default col-sm-1', ng-click="submit()") Submit
+    h2 You submitted answers to #{quiz.title}!
+    each problem, index in quiz.problems
+      p <b>#{index+1}.</b> &nbsp; #{ "\\(" + problem.text + "\\)"}
+      p <b>Answer: #{problem.solution}, you answered: #{problem.answer}</b> 
+      
     script(type='text/x-mathjax-config').
       MathJax.Hub.Config({
         extensions: ['tex2jax.js'],
@@ -22,5 +25,3 @@ html(lang='en',ng-app='quizInstance', ng-init='problemCount = #{problemCount}; u
       });
     script(type='text/javascript', src='/../libs/mathjax/MathJax.js')
     script(type="text/javascript", src="/javascripts/angular.js")
-    script(type="text/javascript", src="/javascripts/quizInstance.js")
-

@@ -22,12 +22,21 @@ router.get('/quiz/:uuid', function (req, res, next) {
     req.params.uuid, 
     req.db, 
     function successCallback(quizInstance) {
-      res.render('quizInstance', {
-        test: quizInstance.problems, 
-        title: quizInstance.title, 
-        problemCount: quizInstance.problems.length,
-        uuid: req.params.uuid
-      });
+      // if submitted, show result page
+      // if not, show quiz page
+      if (quizInstance.submitted) {
+        res.render('quizResult', {
+          quiz: quizInstance
+        });
+      }
+      else {
+        res.render('quizInstance', {
+          test: quizInstance.problems, 
+          title: quizInstance.title, 
+          problemCount: quizInstance.problems.length,
+          uuid: req.params.uuid
+        });
+      }
     }, 
     function errorCallback (error) {
       next();

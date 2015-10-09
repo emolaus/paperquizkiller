@@ -100,7 +100,7 @@ router.post('/submitQuiz', function (req, res){
     req.body.answers,
     req.db, 
     function success(result) {
-      res.send(result);
+      res.send();
     },
     function error(error) {
       console.error(error);
