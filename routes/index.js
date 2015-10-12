@@ -4,18 +4,6 @@ var mathstuff = require('../bin/problem_logic.js');
 var _ = require('underscore');
 
 /*
-These two caused some serious headache. Turns out you need absolute paths
-in html paths. wrong: "scripts/myscript.js" right: "/scripts/myscript.js"
-*/
-router.get('/createQuiz', function (req, res) {
-  res.sendFile('public/tryit.html', {root: __dirname + "/.."});
-});
-
-router.get('/distributeQuiz/:uuid', function (req, res) {
-  res.render('distributeQuiz');
-});
-
-/*
 This serves a html formatted quiz to the student.
 */
 router.get('/quiz/:uuid', function (req, res, next) {
@@ -44,30 +32,6 @@ router.get('/quiz/:uuid', function (req, res, next) {
     });
 });
 
-router.get('/quizInstances/:uuid/:instanceIndex', function (req, res) {
-  // Fetch all data except problem list from db
-  mathstuff.getAllQuizInstances(
-    req.params.uuid, 
-    req.params.instanceIndex, 
-    req.db,
-    function successCallback(quizInstances) {
-      // A bunch of data arrived. Clean and send necessary data.
-      var host = req.get('host');
-      var response = _.map(quizInstances, function (quizInstance) {
-        return {
-          index: quizInstance.index,
-          url: host + '/quiz/' + quizInstance._id
-        }
-      }); 
-
-      res.send(response);
-    },
-    function errorCallback(error) {
-      console.log('/quizInstances/:uuid/:instanceIndex - failed fetching quiz instances.' );
-      res.status(400).send(error);
-    });
-});
-
 // OBS kan använda /problems?tag1=lala&tag2=kaka
 // och req.query
 router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, res, next) {
@@ -86,18 +50,6 @@ router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, 
     res.send(docs);
   });
 
-});
-/**
- * Doesn't make sense to have here.
- */
-router.get('/isLoggedIn', function (req, res) {
-  if (_.has(req.cookies.user) &&
-      _.has(req.cookies.user.username)) {
-    res.send(req.cookies.user.username);
-    return;
-  } else {
-    res.send(false);
-  }
 });
 
 /*
