@@ -7,7 +7,6 @@
     $scope.quiz.title = 'Title';
     $scope.tagString = "";
 
-
     $scope.add = function (text, uuid) {
       $scope.quiz.problems.push({text: text, uuid: uuid});
     }
