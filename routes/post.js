@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var mathstuff = require('../bin/problem_logic.js');
-
+var loginstuff = require('../bin/loginstuff.js');
 var _ = require('underscore');
-/*
-	Receive list of uuids [{id: ...},{id: ...}, ...]
-	Return instantiated and html formatted test (no <head>) 
-*/
+var config = require('../config/serverconfig.js');
+/**
+ * Receive list of uuids [{id: ...},{id: ...}, ...]
+ * Return instantiated and html formatted test (no <head>) 
+ */
 router.post('/preview', function(req, res, next) {
   var data = req.body;
   var testInstance = mathstuff.instantiate(
@@ -37,7 +38,7 @@ router.post('/createQuiz', function (req, res) {
       if (req.cookies.allTests) allTests = req.cookies.allTests;
       allTests.push(quizUuid);
       var cookieData = {allTests: allTests, currentTest: quizUuid};
-      res.cookie('quizzes', cookieData, {maxAge: 1000*3600*24*31});
+      res.cookie('quizzes', cookieData, {maxAge: config.COOKIE_MAX_AGE});
   
       res.send(quizUuid);
     },
@@ -105,9 +106,36 @@ router.post('/submitQuiz', function (req, res){
     function error(error) {
       console.error(error);
       res.status(400).send(error);
-    });
-
-  
+    });  
 });
+
+router.post('/login', function (req, res) {
+  if(!req.body || 
+     !_.has(req.body, 'username') || !_.isString(req.body.username) ||
+     !_.has(req.body, 'password' || !_.isString(req.body.password))
+     ) {
+    console.log('Error at POST /login. Incorrect data in body. ');
+    res.status(400).send('data missing');
+    return;
+  }
+  loginstuff.loginLight(
+      req.db,
+      req.body.username,
+      req.body.password,
+      function (err, success) {
+        if (err) {
+          res.status(400).send(err);
+        } else if (success) {
+          // set cookie
+          var userCookie = {username: req.body.username};
+          res.cookie('user', userCookie, {maxAge: config.COOKIE_MAX_AGE});
+          res.send(true);
+        } else {
+          res.status(400).send('Failed without error message');
+        }
+      }
+    );
+});
+// TODO POST /register
 
 module.exports = router;

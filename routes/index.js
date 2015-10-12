@@ -10,6 +10,7 @@ in html paths. wrong: "scripts/myscript.js" right: "/scripts/myscript.js"
 router.get('/createQuiz', function (req, res) {
   res.sendFile('public/tryit.html', {root: __dirname + "/.."});
 });
+
 router.get('/distributeQuiz/:uuid', function (req, res) {
   res.render('distributeQuiz');
 });
@@ -85,6 +86,18 @@ router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, 
     res.send(docs);
   });
 
+});
+/**
+ * Doesn't make sense to have here.
+ */
+router.get('/isLoggedIn', function (req, res) {
+  if (_.has(req.cookies.user) &&
+      _.has(req.cookies.user.username)) {
+    res.send(req.cookies.user.username);
+    return;
+  } else {
+    res.send(false);
+  }
 });
 
 /*
