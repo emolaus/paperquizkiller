@@ -1,0 +1,40 @@
+doctype html
+html(lang='en', ng-app="registerOrLogin")
+head
+  meta(charset="utf-8", http-equiv="X-UA-Compatible",content="IE=edge")
+  meta(name="viewport", content="width=device-width, initial-scale=1")
+  title Paper quiz killer
+  link(href="/stylesheets/bootstrap.min.css",rel="stylesheet")
+  link(href="/stylesheets/landing-page.css", rel="stylesheet")
+  link(href="/font-awesome/css/font-awesome.min.css", rel="stylesheet", type="text/css")
+  link(href="/stylesheets/tryit.css", rel="stylesheet")
+  style.
+    .message {display: none;}
+    .row {margin-bottom: 10px;}
+    #topSpacing {height: 30px;}
+body(ng-controller="MainController")
+  
+  h1 Please register or login
+  img(id="ornament", src="/images/ornament.png")
+  #topSpacing
+  .container
+    .span4
+      form(class="form-horizontal initialForm")
+        .form-group
+          .row
+            .col-sm-3
+            label(for="inputUsername", class="col-sm-2 control-label") Username
+            .col-sm-2
+              input(type="text", class="form-control", id="inputUsername", ng-model="username")
+          .row
+            .col-sm-3
+            label(for="inputPassword", class="col-sm-2 control-label") Password
+            .col-sm-2
+              input(type="password", class="form-control", id="inputPassword", ng-model="password")
+      .row
+        .col-sm-4
+        button(class="btn btn-default col-sm-3 initialForm", ng-click="go()") Go 
+  script(type="text/javascript", src="/javascripts/jquery.js")
+  script(type="text/javascript", src="/javascripts/bootstrap.min.js")
+  script(type="text/javascript", src="/javascripts/angular.js")
+    

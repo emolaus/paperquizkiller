@@ -17,6 +17,9 @@ router.get('/createQuiz', function (req, res) {
 router.get('/distributeQuiz/:uuid', function (req, res) {
   res.render('distributeQuiz');
 });
+router.get('/register', function (req, res) {
+  res.render('register.jade');
+});
 
 /**
  * Partial content serve. Get list of quiz instances with index and url
