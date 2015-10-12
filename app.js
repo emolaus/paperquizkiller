@@ -11,9 +11,9 @@ var insertDefaultData = require('./bin/insertDefaultData');
 
 insertDefaultData(db);
 
-var routes = require('./routes/index');
-var postRoutes = require('./routes/post');
 var teacherActions = require('./routes/teacherActions');
+var studentActions = require('./routes/studentActions');
+var publicAPI = require('./routes/publicAPI');
 //var distributeQuizRoute = require('./routes/distributeQuiz');
 //var users = require('./routes/users');
 //var api = require('./routes/api');
@@ -42,10 +42,9 @@ app.use(function(req,res,next){
 });
 
 app.use('/', express.static(__dirname + "/public"));
-app.use('/', routes);
-app.use('/', postRoutes);
 app.use('/', teacherActions);
-
+app.use('/', studentActions);
+app.use('/api', publicAPI);
 //app.use('/problems', api);
 
 // catch 404 and forward to error handler

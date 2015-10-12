@@ -3,35 +3,6 @@ var router = express.Router();
 var mathstuff = require('../bin/problem_logic.js');
 var _ = require('underscore');
 
-/*
-This serves a html formatted quiz to the student.
-*/
-router.get('/quiz/:uuid', function (req, res, next) {
-  mathstuff.getQuizInstance(
-    req.params.uuid, 
-    req.db, 
-    function successCallback(quizInstance) {
-      // if submitted, show result page
-      // if not, show quiz page
-      if (quizInstance.submitted) {
-        res.render('quizResult', {
-          quiz: quizInstance
-        });
-      }
-      else {
-        res.render('quizInstance', {
-          test: quizInstance.problems, 
-          title: quizInstance.title, 
-          problemCount: quizInstance.problems.length,
-          uuid: req.params.uuid
-        });
-      }
-    }, 
-    function errorCallback (error) {
-      next();
-    });
-});
-
 // OBS kan använda /problems?tag1=lala&tag2=kaka
 // och req.query
 router.get('/problems/:tag1?/:tag2?/:tag3?/:tag4?/:tag5?/:tag6?', function(req, res, next) {

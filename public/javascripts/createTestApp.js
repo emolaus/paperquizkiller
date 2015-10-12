@@ -21,7 +21,7 @@
         appendTag = tags.join("/");
       }
 
-      $http.get("/problems/" + appendTag).success(function(response) {
+      $http.get("api/problems/" + appendTag).success(function(response) {
         $scope.availableProblems = response;
       });
     }
@@ -34,7 +34,6 @@
 
     // Button click "done"
     $scope.done = function () {
-      console.log('Click');
       // TODO call API createTest
       // What if quiz already exists? Update not create.
       $http.post('createQuiz', $scope.quiz).then(

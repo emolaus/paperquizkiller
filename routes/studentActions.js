@@ -4,6 +4,35 @@ var mathstuff = require('../bin/problem_logic.js');
 var _ = require('underscore');
 
 /*
+This serves a html formatted quiz to the student.
+*/
+router.get('/quiz/:uuid', function (req, res, next) {
+  mathstuff.getQuizInstance(
+    req.params.uuid, 
+    req.db, 
+    function successCallback(quizInstance) {
+      // if submitted, show result page
+      // if not, show quiz page
+      if (quizInstance.submitted) {
+        res.render('quizResult', {
+          quiz: quizInstance
+        });
+      }
+      else {
+        res.render('quizInstance', {
+          test: quizInstance.problems, 
+          title: quizInstance.title, 
+          problemCount: quizInstance.problems.length,
+          uuid: req.params.uuid
+        });
+      }
+    }, 
+    function errorCallback (error) {
+      next();
+    });
+});
+
+/*
 post data need to be an object with elements 
  - quizId, a quizInstance iD
  - answers, an array with solutions
@@ -30,7 +59,5 @@ router.post('/submitQuiz', function (req, res){
     });  
 });
 
-
-// TODO POST /register
 
 module.exports = router;
