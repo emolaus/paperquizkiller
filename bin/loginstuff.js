@@ -1,3 +1,4 @@
+
 var loginstuff = {};
 var _ = require('underscore');
 var config = require('../config/serverconfig.js');
@@ -5,8 +6,6 @@ var config = require('../config/serverconfig.js');
  * Middleware to enforce login of teachers
  */
 loginstuff.login = function (req, res, next) {
-  console.log('At login');
-  console.log(JSON.stringify(req.cookies));
   if (!_.has(req.cookies, 'user') ||
       !_.has(req.cookies.user, 'username')) {
     if (req.method === 'GET') res.cookie('pendingRedirect', {url: req.url}, {maxAge: config.COOKIE_MAX_AGE});

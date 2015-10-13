@@ -45,9 +45,9 @@ router.get('/dashboard/:username', function (req, res) {
         return;
       }
       // TMP
-      //res.send(doc);
+      //res.send(docs);
       // TODO render page
-      res.render('dashboard', [quizData: docs, username: req.params.username]);
+      res.render('dashboard', {quizData: docs, username: req.params.username});
     });
 });
 

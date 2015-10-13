@@ -1,5 +1,5 @@
 doctype html
-html(lang='en', ng-app="register")
+html(lang='en', ng-app="dashboard")
 head
   meta(charset="utf-8", http-equiv="X-UA-Compatible",content="IE=edge")
   meta(name="viewport", content="width=device-width, initial-scale=1")
@@ -10,11 +10,25 @@ head
   link(href="/stylesheets/tryit.css", rel="stylesheet")
   style.
     #topSpacing {height: 30px;}
+    .headerRow{margin-bottom: 10px; margin-top: 10px;}
 body(ng-controller="MainController")
   
   h1 Dashboard
   img(id="ornament", src="/images/ornament.png")
   #topSpacing
+  .row.headerRow
+    h2 Your quizzes
+    each quiz in quizData
+      .row
+        .col-sm-6
+          h3 #{quiz.title}
+        //.col-sm-2
+          button Hello
+      each instance in quiz.instances
+        .row
+          .col-sm-3
+            a(href="") #{instance.creationDate}
+          .col-sm-9 You sent #{instance.instanceCount}, #{instance.submittedCount} have been submitted
 
   script(type="text/javascript", src="/libs/jquery.js")
   script(type="text/javascript", src="/libs/bootstrap.min.js")

@@ -6,6 +6,7 @@ var config = require('../config/serverconfig.js');
 
 router.get('/logout', function (req, res) { 
   res.clearCookie('user'); 
+  res.clearCookie('quizzes');
   res.send('Logged out.'); 
 });
 

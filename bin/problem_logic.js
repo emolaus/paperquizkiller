@@ -496,15 +496,12 @@ mathstuff.getAllQuizzesRelatedToUser = function (db, userUuid, callback) {
         function iterator(quiz, asyncCallback) {
           // search quizInstanceCollection for all instances.
           // Keep track of nr of instances and if they are submissed.
-          console.log(JSON.stringify(quiz));
           async.eachSeries(
             quiz.instances,
             function (instanceDescription, asyncInnerCallback) {
               // quizId: quiz._id doesn't work.
               var query = {quizId: quiz._id.toHexString(), instanceIndex: instanceDescription.instanceIndex};
-              console.log(query);
               quizInstanceCollection.find(query, function (err, quizInstances){
-                console.log(quizInstances);
                 // Expecting an array of instances representing all quizzes sent out on a given occation.
                 var instanceCount = 0;
                 var submittedCount = 0;
