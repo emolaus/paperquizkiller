@@ -471,12 +471,66 @@ mathstuff.submitQuiz = function(uuid, answers, db, successCallback, errorCallbac
     errorCallback);
 }
 /**
+ * Simplified version. Only searching quizzes created by user.
  * callback(err, doc)
+ * Returns an array of quizzes. The instances array has been cleared of userUuid
  */
-mathstuff.getAllQuizzesOfUser = function (db, username, callback) {
-  // Check so that user is in usersLight
-  // Get all quizzes of user
-  // For each quiz, get each quizInstance
-  // For each quizInstance, get submissions
+mathstuff.getAllQuizzesRelatedToUser = function (db, userUuid, callback) {
+  var collection = db.get('quizCollection');
+  collection.find({userUuid: userUuid}, ['-problems', '-userUuid'], function (error, docs) {
+    if (error) callback(error, null);
+    else if (!docs) callback(null, []);
+    else {
+      // for each quiz, and for each instances array element. Remove where not user
+      _.each(docs, function (quiz) {
+        var cleanedInstances = [];
+        _.each(quiz.instances, function (instanceDescription, index) {
+          if (instanceDescription.userUuid === userUuid) cleanedInstances.push({creationDate: instanceDescription.creationDate, instanceIndex: index});
+        });
+        quiz.instances = cleanedInstances;
+      });
+      var quizInstanceCollection = db.get('quizInstanceCollection');
+      // for each doc, get summaric statistics (nr of instances, nr of submissions)
+      async.eachSeries(
+        docs, 
+        function iterator(quiz, asyncCallback) {
+          // search quizInstanceCollection for all instances.
+          // Keep track of nr of instances and if they are submissed.
+          console.log(JSON.stringify(quiz));
+          async.eachSeries(
+            quiz.instances,
+            function (instanceDescription, asyncInnerCallback) {
+              // quizId: quiz._id doesn't work.
+              var query = {quizId: quiz._id.toHexString(), instanceIndex: instanceDescription.instanceIndex};
+              console.log(query);
+              quizInstanceCollection.find(query, function (err, quizInstances){
+                console.log(quizInstances);
+                // Expecting an array of instances representing all quizzes sent out on a given occation.
+                var instanceCount = 0;
+                var submittedCount = 0;
+                if (err) {
+                  asyncInnerCallback(err); 
+                  return;
+                } else if (!quizInstances) {
+                  instanceCount = 0;
+                  submittedCount = 0;
+                } else {
+                  // calculate how many instances there are and how many were submitted
+                  instanceCount = quizInstances.length;
+                  submittedCount = _.where(quizInstances, {submitted: true}).length;
+                }
+                instanceDescription.instanceCount = instanceCount;
+                instanceDescription.submittedCount = submittedCount;
+                asyncInnerCallback();
+              });
+            },
+            function done() {
+              asyncCallback();
+            });
+        },function done() {
+          callback(null, docs); 
+      });
+    }
+  });
 };
 module.exports = mathstuff;

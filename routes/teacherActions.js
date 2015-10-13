@@ -27,12 +27,27 @@ router.get('/distributeQuiz/:uuid', function (req, res) {
     });
 });
 
-router.get('dashboard/:username', function (req, res) {
-  mathstuff.getAllQuizzesOfUser(
+/**
+ * If the username doesn't match the logged in user, returns with status code 401
+ */
+router.get('/dashboard/:username', function (req, res) {
+  // check so that this is the correct user.
+  if (req.cookies.user.username != req.params.username) {
+    res.status(401).send('Username not matching your login credentials');
+    return;
+  }
+  mathstuff.getAllQuizzesRelatedToUser(
     req.db, 
-    req.params.username,
-    function (err, doc) {
-      // TODO
+    req.cookies.user.userUuid,
+    function (err, docs) {
+      if (err) {
+        res.status(400).send(err);
+        return;
+      }
+      // TMP
+      //res.send(doc);
+      // TODO render page
+      res.render('dashboard', [quizData: docs, username: req.params.username]);
     });
 });
 
