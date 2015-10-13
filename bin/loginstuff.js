@@ -1,5 +1,21 @@
 var loginstuff = {};
-
+var _ = require('underscore');
+var config = require('../config/serverconfig.js');
+/**
+ * Middleware to enforce login of teachers
+ */
+loginstuff.login = function (req, res, next) {
+  console.log('At login');
+  console.log(JSON.stringify(req.cookies));
+  if (!_.has(req.cookies, 'user') ||
+      !_.has(req.cookies.user, 'username')) {
+    if (req.method === 'GET') res.cookie('pendingRedirect', {url: req.url}, {maxAge: config.COOKIE_MAX_AGE});
+    console.log('No cookie set. Redirect.');
+    res.redirect('/register');
+    return;
+  }
+  next();
+}
 /**
  * callback(error, success) 
  */
@@ -26,7 +42,10 @@ loginstuff.loginLight = function (db, username, password, callback) {
   // If yes, return success: true
   // If no, return error
   var collection = db.get('usersLight');
-  collection.findOne({username: username, password: password}, function (err, doc){
+
+  collection.findOne({username: username, password: password}, function (err, doc) {
+    console.log('error: ' + JSON.stringify(err));
+    console.log('doc: ' + JSON.stringify(doc));
     if (err) callback(err, null);
     else if (doc) callback(null, true);
     else callback(new Error("wrong username or password"), false);

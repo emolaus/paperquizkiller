@@ -3,7 +3,6 @@ var router = express.Router();
 var _ = require('underscore');
 var mathstuff = require('../bin/problem_logic.js');
 var config = require('../config/serverconfig.js');
-var loginstuff = require('../bin/loginstuff.js');
 
 /*
 Full page serves.
@@ -17,8 +16,14 @@ router.get('/createQuiz', function (req, res) {
 router.get('/distributeQuiz/:uuid', function (req, res) {
   res.render('distributeQuiz');
 });
-router.get('/register', function (req, res) {
-  res.render('register.jade');
+
+router.get('dashboard/:username', function (req, res) {
+  mathstuff.getAllQuizzesOfUser(
+    req.db, 
+    req.params.username,
+    function (err, doc) {
+      
+    });
 });
 
 /**
@@ -47,19 +52,6 @@ router.get('/quizInstances/:uuid/:instanceIndex', function (req, res) {
       console.log('/quizInstances/:uuid/:instanceIndex - failed fetching quiz instances.' );
       res.status(400).send(error);
     });
-});
-
-/**
- * Doesn't make sense to have here.
- */
-router.get('/isLoggedIn', function (req, res) {
-  if (_.has(req.cookies.user) &&
-      _.has(req.cookies.user.username)) {
-    res.send(req.cookies.user.username);
-    return;
-  } else {
-    res.send(false);
-  }
 });
 
 /**
@@ -139,34 +131,6 @@ router.post('/instantiateQuiz', function (req, res) {
       res.status(400).send('Error instantiating tests: ' + error);
     }
   );
-});
-
-router.post('/login', function (req, res) {
-  if(!req.body || 
-     !_.has(req.body, 'username') || !_.isString(req.body.username) ||
-     !_.has(req.body, 'password' || !_.isString(req.body.password))
-     ) {
-    console.log('Error at POST /login. Incorrect data in body. ');
-    res.status(400).send('data missing');
-    return;
-  }
-  loginstuff.loginLight(
-      req.db,
-      req.body.username,
-      req.body.password,
-      function (err, success) {
-        if (err) {
-          res.status(400).send(err);
-        } else if (success) {
-          // set cookie
-          var userCookie = {username: req.body.username};
-          res.cookie('user', userCookie, {maxAge: config.COOKIE_MAX_AGE});
-          res.send(true);
-        } else {
-          res.status(400).send('Failed without error message');
-        }
-      }
-    );
 });
 
 module.exports = router;

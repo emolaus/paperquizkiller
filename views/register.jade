@@ -12,7 +12,7 @@ head
     .message {display: none;}
     .formRow {margin-bottom: 10px;}
     #topSpacing {height: 30px;}
-    #infoMissing {display: none;}
+    #info {display: none;}
     #loginHeader {display: none;}
 body(ng-controller="MainController")
   
@@ -43,9 +43,9 @@ body(ng-controller="MainController")
       .row
         .col-sm-4
         button(class="btn btn-default col-sm-3 initialForm", ng-click="go()") Go 
-      .row
+      .row#info
         .col-sm-4
-        #infoMissing Fill out both username and password
+        .dummy Fill out both username and password
   script(type="text/javascript", src="/libs/jquery.js")
   script(type="text/javascript", src="/libs/bootstrap.min.js")
   script(type="text/javascript", src="/libs/angular.js")

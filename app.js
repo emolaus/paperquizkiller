@@ -11,6 +11,8 @@ var insertDefaultData = require('./bin/insertDefaultData');
 
 insertDefaultData(db);
 
+var loginMiddleware = require('./bin/loginstuff').login;
+var loginRoutes = require('./routes/loginRoutes');
 var teacherActions = require('./routes/teacherActions');
 var studentActions = require('./routes/studentActions');
 var publicAPI = require('./routes/publicAPI');
@@ -42,10 +44,12 @@ app.use(function(req,res,next){
 });
 
 app.use('/', express.static(__dirname + "/public"));
-app.use('/', teacherActions);
+//app.get('/logout', function (req, res) { res.clearCookie('user'); res.send('Logged out.'); });
+app.use('/', loginRoutes);
+app.get('/register', function (req, res) { res.render('register.jade'); });
 app.use('/', studentActions);
 app.use('/api', publicAPI);
-//app.use('/problems', api);
+app.use('/', loginMiddleware, teacherActions);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

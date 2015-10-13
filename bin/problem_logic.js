@@ -467,5 +467,10 @@ mathstuff.submitQuiz = function(uuid, answers, db, successCallback, errorCallbac
     }, 
     errorCallback);
 }
-
+/**
+ * callback(err, doc)
+ */
+mathstuff.getAllQuizzesOfUser = function (db, username, callback) {
+  
+};
 module.exports = mathstuff;
