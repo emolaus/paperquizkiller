@@ -14,7 +14,17 @@ router.get('/createQuiz', function (req, res) {
 });
 
 router.get('/distributeQuiz/:uuid', function (req, res) {
-  res.render('distributeQuiz');
+  // validate uuid
+  mathstuff.verifyQuizExists(
+    req.params.uuid, 
+    req.db, 
+    function success() {
+      res.render('distributeQuiz', {quizUuid: req.params.uuid});
+    }, 
+    function error() {
+      console.log('GET /distribute quiz. Received invalid quiz uuid ' + req.params.uuid);
+      res.status(400).send('Quiz id not found.');
+    });
 });
 
 router.get('dashboard/:username', function (req, res) {
@@ -22,7 +32,7 @@ router.get('dashboard/:username', function (req, res) {
     req.db, 
     req.params.username,
     function (err, doc) {
-      
+      // TODO
     });
 });
 
@@ -84,11 +94,11 @@ router.post('/createQuiz', function (req, res) {
 
   mathstuff.insertQuiz(req.body, req.db,
     function successCallback(quizUuid) {
-      var allTests = [];
-      if (req.cookies.allTests) allTests = req.cookies.allTests;
-      allTests.push(quizUuid);
-      var cookieData = {allTests: allTests, currentTest: quizUuid};
-      res.cookie('quizzes', cookieData, {maxAge: config.COOKIE_MAX_AGE});
+      //var allTests = [];
+      //if (req.cookies.allTests) allTests = req.cookies.allTests;
+      //allTests.push(quizUuid);
+      //var cookieData = {allTests: allTests, currentTest: quizUuid};
+      //res.cookie('quizzes', cookieData, {maxAge: config.COOKIE_MAX_AGE});
   
       res.send(quizUuid);
     },
@@ -102,11 +112,11 @@ router.post('/instantiateQuiz', function (req, res) {
   // Here comes the big question. Use cookie data or post data?
   // For now, use cookies.quizzes.currentTest (uuid)
   // check that currentTest is set
-  if (!_.has(req.cookies, 'quizzes') ||
+  /*if (!_.has(req.cookies, 'quizzes') ||
       !_.has(req.cookies.quizzes, 'currentTest')) {
     res.status(400).send('No current test in cookie found');
     return;
-  }
+  }*/
 
   // Check so that count is given and valid
   if (!_.has(req, 'body')) {
@@ -117,14 +127,20 @@ router.post('/instantiateQuiz', function (req, res) {
     res.status(400).send('Data missing');
     return; 
   }
-  var quizzesCookie = req.cookies.quizzes;
+  if (!_.has(req.body, 'quizUuid')) {
+    res.status(400).send('Data missing');
+    return; 
+  }
+
+
+  //var quizzesCookie = req.cookies.quizzes;
   mathstuff.instantiateQuiz(
-    quizzesCookie.currentTest,
+    req.body.quizUuid,
     req.body.instanceCount,
     req.db,
     function successCallback(data) {
-      quizzesCookie.instanceIndex = data.instanceIndex;
-      res.cookie('quizzes', quizzesCookie, {maxAge: 1000*3600*24*31});
+      //quizzesCookie.instanceIndex = data.instanceIndex;
+      //res.cookie('quizzes', quizzesCookie, {maxAge: 1000*3600*24*31});
       res.send(data);
     },
     function errorCallback(error) {

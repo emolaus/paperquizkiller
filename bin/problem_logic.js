@@ -471,6 +471,9 @@ mathstuff.submitQuiz = function(uuid, answers, db, successCallback, errorCallbac
  * callback(err, doc)
  */
 mathstuff.getAllQuizzesOfUser = function (db, username, callback) {
-  
+  // Check so that user is in usersLight
+  // Get all quizzes of user
+  // For each quiz, get each quizInstance
+  // For each quizInstance, get submissions
 };
 module.exports = mathstuff;

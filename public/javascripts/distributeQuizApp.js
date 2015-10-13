@@ -6,9 +6,7 @@
     $scope.showForm = true;
 
     $scope.instantiateQuizzes = function () {
-      console.log($scope.instanceCount);
-
-      $http.post('/instantiateQuiz', {instanceCount: $scope.instanceCount}).then(
+      $http.post('/instantiateQuiz', {instanceCount: $scope.instanceCount, quizUuid: $scope.quizUuid}).then(
         function successCallback(response) {
           console.log('Success!');
           console.log(response);
