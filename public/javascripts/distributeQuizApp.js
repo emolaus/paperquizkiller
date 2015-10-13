@@ -42,7 +42,7 @@
       );
     }
     $scope.goToDashboard = function () {
-      $window.location.href = "";
+      $window.location.href = '/dashboard/' + $scope.username;
     }
   }]);
 })();

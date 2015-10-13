@@ -19,7 +19,7 @@ router.get('/distributeQuiz/:uuid', function (req, res) {
     req.params.uuid, 
     req.db, 
     function success() {
-      res.render('distributeQuiz', {quizUuid: req.params.uuid});
+      res.render('distributeQuiz', {quizUuid: req.params.uuid, username: req.cookies.user.username});
     }, 
     function error() {
       console.log('GET /distribute quiz. Received invalid quiz uuid ' + req.params.uuid);
