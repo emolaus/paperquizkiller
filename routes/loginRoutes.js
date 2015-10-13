@@ -12,7 +12,7 @@ router.get('/logout', function (req, res) {
 router.get('/isLoggedIn', function (req, res) {
   if (_.has(req.cookies, 'user') &&
       _.has(req.cookies.user, 'username')) {
-    res.send(req.cookies.user.username);
+    res.send(req.cookies.user);
     return;
   } else {
     res.send(false);
@@ -37,7 +37,7 @@ router.post('/login', function (req, res) {
           res.status(400).send(err);
         } else if (success) {
           // set cookie
-          var userCookie = {username: req.body.username};
+          var userCookie = {username: req.body.username, userUuid: success.userUuid};
           res.cookie('user', userCookie, {maxAge: config.COOKIE_MAX_AGE});
           // If the pendingRedirect cookie is set, return that, else go to createQuiz
           if (_.has(req, 'cookies') &&

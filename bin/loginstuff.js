@@ -46,8 +46,8 @@ loginstuff.loginLight = function (db, username, password, callback) {
   collection.findOne({username: username, password: password}, function (err, doc) {
     console.log('error: ' + JSON.stringify(err));
     console.log('doc: ' + JSON.stringify(doc));
-    if (err) callback(err, null);
-    else if (doc) callback(null, true);
+    if (err) callback(err, false);
+    else if (doc) callback(null, {userUuid: doc._id});
     else callback(new Error("wrong username or password"), false);
   });
 }

@@ -143,10 +143,11 @@ function instantiateFromProblemUUIDs(db, uuids, successCallback, errorCallback) 
   }
 */
 /*
-  Expects a quiz object (see verifyQuiz()) and a db handle.
+  Expects a quiz object (see verifyQuiz()), a user id and a db handle.
   errorCallback(error): error is an error message as a string
+  TODO: validate userUuid
 */
-mathstuff.insertQuiz = function (quiz, db, successCallback, errorCallback) {
+mathstuff.insertQuiz = function (quiz, db, userUuid, successCallback, errorCallback) {
   mathstuff.verifyQuiz(quiz, db,
     function () {
       // At this point we have a valid quiz object. Time to insert into db.
@@ -158,6 +159,7 @@ mathstuff.insertQuiz = function (quiz, db, successCallback, errorCallback) {
       });
       var newQuiz = {
         title: quiz.title, 
+        userUuid: userUuid,
         problems: flattenedProblems,
         insertionDate: new Date()
       };

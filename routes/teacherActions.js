@@ -92,7 +92,10 @@ router.post('/createQuiz', function (req, res) {
     return;
   }
 
-  mathstuff.insertQuiz(req.body, req.db,
+  mathstuff.insertQuiz(
+    req.body, 
+    req.db,
+    req.cookies.user.userUuid,
     function successCallback(quizUuid) {
       //var allTests = [];
       //if (req.cookies.allTests) allTests = req.cookies.allTests;
