@@ -250,8 +250,9 @@ mathstuff.verifyQuizProblems = function(problems, db, callback) {
 /*
   Expects the uuid of the template quiz and the number of instantiations
   Returns successCallback({success: true, quizId: uuid, instanceIndex: instanceIndex});
+  // TODO verify userUuid
 */
-mathstuff.instantiateQuiz = function (uuid, count, db, successCallback, errorCallback) {
+mathstuff.instantiateQuiz = function (uuid, count, userUuid, db, successCallback, errorCallback) {
   // Sanitize data
   if (!_.isNumber(count) ||
       count < 0 ||
@@ -269,7 +270,7 @@ mathstuff.instantiateQuiz = function (uuid, count, db, successCallback, errorCal
       var collection = db.get('quizCollection');
       collection.updateById(
         uuid,
-        {$push: {instances: {creationDate: new Date()}}},
+        {$push: {instances: {creationDate: new Date(), userUuid: userUuid}}},
         function (err, doc) {
           if (err) {
             console.error('At instantiateQuiz: failed updating quiz with new instance object.');

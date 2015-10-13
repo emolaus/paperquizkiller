@@ -110,16 +110,17 @@ router.post('/createQuiz', function (req, res) {
     }
   );
 });
+/**
+ * Expects two post data elements: 
+ {
+    instanceCount [integer]
+    quizUuid [string]
 
+    On success, returns {success: true, quizId: uuid, instanceIndex: instanceIndex}
+    On error, sets HTTP status code to 400 and returns error message
+ }
+ */
 router.post('/instantiateQuiz', function (req, res) {
-  // Here comes the big question. Use cookie data or post data?
-  // For now, use cookies.quizzes.currentTest (uuid)
-  // check that currentTest is set
-  /*if (!_.has(req.cookies, 'quizzes') ||
-      !_.has(req.cookies.quizzes, 'currentTest')) {
-    res.status(400).send('No current test in cookie found');
-    return;
-  }*/
 
   // Check so that count is given and valid
   if (!_.has(req, 'body')) {
@@ -140,6 +141,7 @@ router.post('/instantiateQuiz', function (req, res) {
   mathstuff.instantiateQuiz(
     req.body.quizUuid,
     req.body.instanceCount,
+    req.cookies.user.userUuid,
     req.db,
     function successCallback(data) {
       //quizzesCookie.instanceIndex = data.instanceIndex;
