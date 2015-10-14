@@ -1,0 +1,41 @@
+doctype html
+html(lang='en', ng-app='detailedQuiz', ng-init='username = "#{username}"')
+head
+  meta(charset="utf-8", http-equiv="X-UA-Compatible",content="IE=edge")
+  meta(name="viewport", content="width=device-width, initial-scale=1")
+  title Paper quiz killer
+  link(href="/stylesheets/bootstrap.min.css",rel="stylesheet")
+  link(href="/stylesheets/landing-page.css", rel="stylesheet")
+  link(href="/font-awesome/css/font-awesome.min.css", rel="stylesheet", type="text/css")
+  link(href="/stylesheets/tryit.css", rel="stylesheet")
+  style.
+    #topSpacing {height: 30px;}
+    .headerRow{margin-bottom: 10px; margin-top: 10px;}
+body(ng-controller="MainController")
+  
+  h1 Dashboard
+  img(id="ornament", src="/images/ornament.png")
+  #topSpacing
+  .row.headerRow
+    h2 Your quizzes
+  .row.headerRow
+    button(class='btn btn-default col-sm-2', ng-click='createNewQuiz()') Create new
+  .row
+    each quiz, quizIndex in quizData
+      .panel.panel-default
+        .panel-heading #{quiz.title}
+        .panel-body
+          button(class='btn btn-default col-sm-2' ng-click='distribute("#{quiz._id}")') Send to class
+        ul.list-group
+          each instance, instanceIndex in quiz.instances
+            li.list-group-element
+              .row
+                .col-sm-3
+                  a(href='' ng-click='viewQuizInstanceDetails(#{quizIndex}, #{instanceIndex})') #{instance.creationDate}
+                .col-sm-9 You sent #{instance.instanceCount}, #{instance.submittedCount} have been submitted
+  script(type="text/javascript", src="/libs/jquery.js")
+  script(type="text/javascript", src="/libs/bootstrap.min.js")
+  script(type="text/javascript", src="/libs/angular.js")
+  script(type='text/javascript', src='/javascripts/detailedQuiz.js')
+  
+  

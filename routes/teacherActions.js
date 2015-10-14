@@ -44,13 +44,13 @@ router.get('/dashboard/:username', function (req, res) {
         res.status(400).send(err);
         return;
       }
-      // Alternative printout for debugging
-      //res.send(docs);
-      // TODO render page
-      res.render('dashboard', {quizData: docs, username: req.params.username, quizDataAsString: JSON.stringify(docs)});
+      res.render('dashboard', {quizData: docs, username: req.params.username});
     });
 });
-
+/*
+  Turns out you can't inject more than simple variables with angular ng-init
+  So the client must fetch the data from here at (/dashboard/username)
+*/
 router.get('/getAllQuizzesRelatedToUser/:username', function (req, res) {
 if (req.cookies.user.username != req.params.username) {
     res.status(401).send('Username not matching your login credentials');
@@ -96,6 +96,11 @@ router.get('/quizInstances/:uuid/:instanceIndex', function (req, res) {
     });
 });
 
+router.get('/getDetailedQuizReport/:quizIndex/:instanceIndex', function (req, res) {
+
+  // TODO
+  //mathstuff.getDetailedQuizReport(req.db, quizIndex, instanceIndex, function (err, docs) {});
+});
 /**
  * Receive list of uuids [{id: ...},{id: ...}, ...]
  * Return instantiated and html formatted test (no <head>) 
