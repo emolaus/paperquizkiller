@@ -47,7 +47,24 @@ router.get('/dashboard/:username', function (req, res) {
       // Alternative printout for debugging
       //res.send(docs);
       // TODO render page
-      res.render('dashboard', {quizData: docs, username: req.params.username});
+      res.render('dashboard', {quizData: docs, username: req.params.username, quizDataAsString: JSON.stringify(docs)});
+    });
+});
+
+router.get('/getAllQuizzesRelatedToUser/:username', function (req, res) {
+if (req.cookies.user.username != req.params.username) {
+    res.status(401).send('Username not matching your login credentials');
+    return;
+  }
+  mathstuff.getAllQuizzesRelatedToUser(
+    req.db, 
+    req.cookies.user.userUuid,
+    function (err, docs) {
+      if (err) {
+        res.status(400).send(err);
+        return;
+      }
+      res.send(docs);
     });
 });
 

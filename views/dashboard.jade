@@ -1,5 +1,5 @@
 doctype html
-html(lang='en')
+html(lang='en', ng-app='dashboard', ng-init='username = "#{username}"')
 head
   meta(charset="utf-8", http-equiv="X-UA-Compatible",content="IE=edge")
   meta(name="viewport", content="width=device-width, initial-scale=1")
@@ -11,6 +11,8 @@ head
   style.
     #topSpacing {height: 30px;}
     .headerRow{margin-bottom: 10px; margin-top: 10px;}
+    .colorMe {background-color: #ffaaaa;}
+    .colorMeToo {background-color: #aaffaa;}
 body(ng-controller="MainController")
   
   h1 Dashboard
@@ -18,19 +20,24 @@ body(ng-controller="MainController")
   #topSpacing
   .row.headerRow
     h2 Your quizzes
-    each quiz in quizData
-      .row
-        .col-sm-6
-          h3 #{quiz.title}
-        //.col-sm-2
-          button Hello
-      each instance in quiz.instances
-        .row
-          .col-sm-3
-            a(href="") #{instance.creationDate}
-          .col-sm-9 You sent #{instance.instanceCount}, #{instance.submittedCount} have been submitted
+  .row.headerRow
+    button(class='btn btn-default col-sm-2', ng-click='createNewQuiz()') Create new
+  .row
+    each quiz, quizIndex in quizData
+      .panel.panel-default
+        .panel-heading #{quiz.title}
+        .panel-body
+          button(class='btn btn-default col-sm-2' ng-click='distribute("#{quiz._id}")') Send to class
+        ul.list-group
+          each instance, instanceIndex in quiz.instances
+            li.list-group-element
+              .row
+                .col-sm-3
+                  a(href='' ng-click='viewQuizInstanceDetails(#{quizIndex}, #{instanceIndex})') #{instance.creationDate}
+                .col-sm-9 You sent #{instance.instanceCount}, #{instance.submittedCount} have been submitted
 
   script(type="text/javascript", src="/libs/jquery.js")
   script(type="text/javascript", src="/libs/bootstrap.min.js")
   script(type="text/javascript", src="/libs/angular.js")
+  script(type='text/javascript', src='/javascripts/dashboard.js')
     
