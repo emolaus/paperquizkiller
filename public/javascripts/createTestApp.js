@@ -4,7 +4,8 @@
     $scope.quiz = {};
     $scope.quiz.problems = [];
     $scope.availableProblems = [];
-    $scope.quiz.title = 'Title';
+    // This binding just stopped working
+    //$scope.quiz.title = 'Title';
     $scope.tagString = "";
 
     $scope.add = function (text, uuid) {
@@ -12,7 +13,6 @@
     }
     var getProblems = function(tagString) {
       var appendTag = "";
-      console.log(tagString)
       if (tagString) {
         tags = tagString.match(/("[^"]+"|[^;,"\s]+)/g);
         // Send maximally 6 search words
@@ -35,6 +35,8 @@
     $scope.done = function () {
       // TODO call API createTest
       // What if quiz already exists? Update not create.
+
+      $scope.quiz.title = $('#testHeading').html();
       $http.post('createQuiz', $scope.quiz).then(
         function successCallback(response) {
           $window.location.href = '/distributeQuiz/' + response.data;

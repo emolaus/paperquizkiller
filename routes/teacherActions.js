@@ -44,7 +44,7 @@ router.get('/dashboard/:username', function (req, res) {
         res.status(400).send(err);
         return;
       }
-      // TMP
+      // Alternative printout for debugging
       //res.send(docs);
       // TODO render page
       res.render('dashboard', {quizData: docs, username: req.params.username});
@@ -106,7 +106,7 @@ router.post('/createQuiz', function (req, res) {
     res.status(400).send('Data missing');
     return;
   }
-
+  console.log(req.body);
   mathstuff.insertQuiz(
     req.body, 
     req.db,
