@@ -100,6 +100,15 @@ router.get('/getDetailedQuizReport/:quizIndex/:instanceIndex', function (req, re
 
   // TODO
   //mathstuff.getDetailedQuizReport(req.db, quizIndex, instanceIndex, function (err, docs) {});
+  // Dummy data for now
+  var dummyData = [
+    ['Problem', 'Submitted', 'Correct'],
+    ['1', 100, 80],
+    ['2', 80, 60],
+    ['3', 100, 60],
+    ['4', 90, 75]
+  ];
+  res.send(dummyData);
 });
 /**
  * Receive list of uuids [{id: ...},{id: ...}, ...]

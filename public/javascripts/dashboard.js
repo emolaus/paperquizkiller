@@ -36,9 +36,10 @@
           // assemble data
           // Vilken data behövs? -Antalet problem, antalet submitted för varje problem, antalet correct för varje problem
           data = [];
-          $http.get('/getDetailedQuizReport/' + quizIndex + '/' + instanceIndex).then(function success(result) {
+          $http.get('/getDetailedQuizReport/' + quizIndex + '/' + instanceIndex).then(
+            function success(result) {
             // Parse data
-            renderChart(divId, data); 
+            renderChart(divId, result.data); 
           }, 
           function error(result) {
             console.log('Error fetching detailed data');
@@ -46,21 +47,12 @@
           });
 
         }
-        });
-      }
-      else chartDiv.hide('slow');
+      } else chartDiv.hide('slow');
     }
-    function renderChart(divId, data) {
+    function renderChart(divId, rawData) {
       // Create the data table.
       $scope.isChartRendered[divId] = true;
-      var data = google.visualization.arrayToDataTable([
-        ['Problem', 'Submitted', 'Correct'],
-        ['1', 1000, 400],
-        ['2', 1170, 460],
-        ['3', 660, 1120],
-        ['4', 1030, 540]
-      ]);
-
+      var data = google.visualization.arrayToDataTable(rawData);
 
       // Set chart options
       var options = {
