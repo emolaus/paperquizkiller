@@ -530,4 +530,35 @@ mathstuff.getAllQuizzesRelatedToUser = function (db, userUuid, callback) {
     }
   });
 };
+/*
+  Returns summary of quiz results:
+  ['Problem', 'Submitted', 'Correct'],
+    ['1', 5, 4],
+    ['2', 3, 2]
+  ]
+*/
+mathstuff.getQuizResultSummary = function (db, quizUuid, instanceIndex, finalCallback) {
+  var resultingData = [];
+  // collect all quiz responses
+  var collection = db.get('quizInstanceCollection');
+  var query = {quizId: quizUuid, instanceIndex: instanceIndex}; 
+  collection.find(query, function (error, quizInstances){
+    if (error) finalCallback(error, null);
+    else if (_.isEmpty(quizInstances)) finalCallback(null, resultingData);
+    else {
+      // insert placeholder arrays into resultingData
+      _.each(quizInstances[0].problems, function (problem, index) {
+        resultingData.push([index + 1,0,0]);
+      });
+      // populate resultingData values
+      _.each(quizInstances, function (quizInstance) {
+        _.each(quizInstance.problems, function (problem, problemIndex) {
+          if (_.has(problem, 'answer')) resultingData[problemIndex][1]++;
+          if (problem.result) resultingData[problemIndex][2]++;
+        });
+      });
+      finalCallback(null, resultingData);
+    }
+  }); 
+};
 module.exports = mathstuff;

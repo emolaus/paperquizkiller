@@ -96,19 +96,23 @@ router.get('/quizInstances/:uuid/:instanceIndex', function (req, res) {
     });
 });
 
-router.get('/getDetailedQuizReport/:quizIndex/:instanceIndex', function (req, res) {
+router.get('/quizReportSummary/:quizUuid/:instanceIndex', function (req, res) {
 
   // TODO
-  //mathstuff.getDetailedQuizReport(req.db, quizIndex, instanceIndex, function (err, docs) {});
-  // Dummy data for now
-  var dummyData = [
-    ['Problem', 'Submitted', 'Correct'],
-    ['1', 100, 80],
-    ['2', 80, 60],
-    ['3', 100, 60],
-    ['4', 90, 75]
-  ];
-  res.send(dummyData);
+  mathstuff.getQuizResultSummary(
+    req.db, 
+    req.params.quizUuid, 
+    parseInt(req.params.instanceIndex), 
+    function (error, data) {
+      if (error) res.status(400).send('Error. Possibly bad quiz id or instance index.');
+      else {
+        var formatted = [['Problem', 'Submitted', 'Correct']];
+        _.each(data, function (problemRow, index) {
+          formatted.push(problemRow);
+        });
+        res.send(formatted);
+      }
+  }); 
 });
 /**
  * Receive list of uuids [{id: ...},{id: ...}, ...]

@@ -40,7 +40,7 @@ body(ng-controller="MainController")
                   a(href='' ng-click='viewQuizInstanceDetails(#{quizIndex}, #{instance.instanceIndex})') #{instance.creationDate}
                 .col-sm-2 You sent #{instance.instanceCount}, #{instance.submittedCount} have been submitted
                 .col-sm-2 
-                  a(href='' ng-click='showDetails(#{quizIndex}, #{instance.instanceIndex})') Show/hide details
+                  a(href='' ng-click='showReportSummary("#{quiz._id}", #{quizIndex}, #{instance.instanceIndex})') Show/hide details
               .row
                 div(id="chart_div#{quizIndex}_#{instance.instanceIndex}" class="chart_div")
   button(ng-click='drawChart') Draw

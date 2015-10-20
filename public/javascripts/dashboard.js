@@ -24,7 +24,7 @@
     $scope.viewQuizInstanceDetails = function(quizIndex, instanceIndex) {
       console.log('TODO create quiz detail page.');
     };
-    $scope.showDetails = function(quizIndex, instanceIndex) {
+    $scope.showReportSummary = function(quizUuid, quizIndex, instanceIndex) {
       var divId = 'chart_div' + quizIndex + '_' + instanceIndex;
       var chartDiv = $('#' + divId);
       // TODO fetch data
@@ -36,7 +36,7 @@
           // assemble data
           // Vilken data behövs? -Antalet problem, antalet submitted för varje problem, antalet correct för varje problem
           data = [];
-          $http.get('/getDetailedQuizReport/' + quizIndex + '/' + instanceIndex).then(
+          $http.get('/quizReportSummary/' + quizUuid + '/' + instanceIndex).then(
             function success(result) {
             // Parse data
             renderChart(divId, result.data); 
