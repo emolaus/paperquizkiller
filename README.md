@@ -4,10 +4,10 @@
 
 A node, express, angular and mongo powered site where math teachers can generete tests from a database of math problems and students can take the tests. The problems are randomized so that two tests are similar but not quite the same. 
 
-Version 0: a bare-bones application setup using express-generator. </br>
-Version 1: a pitch site and a demo flow of the application. </br>
-Version 2: "distribute" page, and quiz pages generated for each student.  </br>
-Version 3: a rudimentary dashboard with summaries of quiz results.  </br>
+Version 0: a bare-bones application setup using express-generator.  
+Version 1: a pitch site and a demo flow of the application.  
+Version 2: "distribute" page, and quiz pages generated for each student.  
+Version 3: a rudimentary dashboard with summaries of quiz results.  
 
 The actual database is not included in the repo.
 
