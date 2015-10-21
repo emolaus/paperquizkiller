@@ -13,6 +13,10 @@ router.get('/createQuiz', function (req, res) {
   res.sendFile('public/tryit.html', {root: __dirname + "/.."});
 });
 
+router.get('/createClass', function (req, res) {
+  res.render('createClass', {username: req.cookies.user.username});
+});
+
 router.get('/distributeQuiz/:uuid', function (req, res) {
   // validate uuid
   mathstuff.verifyQuizExists(

@@ -49,6 +49,9 @@
         }
       } else chartDiv.hide('slow');
     }
+    $scope.createNewClass = function () {
+      $window.location.href = '/createClass';
+    };
     function renderChart(divId, rawData) {
       // Create the data table.
       $scope.isChartRendered[divId] = true;
