@@ -31,12 +31,13 @@
         return;
       }
       console.log($scope.username)
-      $http.post('/addClass/' + $scope.username).then(
+      $http.post('/addClass/' + $scope.username, {nameOfClass: $scope.nameOfClass, studentList: $scope.studentList}).then(
         function success(result) {
-          console.log('Great success!');
+          $window.location.href = '/dashboard/' + $scope.username;
         },
         function error(error) {
-          console.log(error);
+          $scope.infoText = errors;
+        $('#modalInfo').modal('show');
         });
     }
   }]);

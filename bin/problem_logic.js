@@ -4,6 +4,9 @@ var async = require('async');
 var config = require('../config/serverconfig.js');
 var mathstuff = {};
 
+var nouns = require('../other/nouns_6short.json');
+var adjectives = require('../other/adjectives_6short.json');
+
 mathstuff.createProblem = function(problem_set, seed) {
   if (!seed) seed = 0;
   // if problem_set is array, iterate
@@ -157,6 +160,7 @@ mathstuff.insertQuiz = function (quiz, db, userUuid, successCallback, errorCallb
       _.each(quiz.problems, function (problem) {
         flattenedProblems.push(problem.uuid);
       });
+      // TODO insertionDate should be creationDate
       var newQuiz = {
         title: quiz.title, 
         userUuid: userUuid,
@@ -568,7 +572,7 @@ mathstuff.createClass = function(db, username, nameOfClass, studentList, finalCa
   // TODO Check input
   // Check so that name isn't taken
   var collection = db.get('classCollection');
-  collection.findOne({teacherUsername: username, name: nameOfClass}, function (error, foundClass) {
+  collection.findOne({teacher: username, name: nameOfClass}, function (error, foundClass) {
     if (error) {
       finalCallback('Unable to search database', false);
       return;
@@ -578,7 +582,28 @@ mathstuff.createClass = function(db, username, nameOfClass, studentList, finalCa
       finalCallback('Class name taken', false);
       return;
     }
-      finalCallback(null, true);
+    var students = [];
+    _.each(nameOfClass, function (studentName) {
+      var student = {
+        name: studentName,
+        creationDate: new Date(),
+        pin: mathjs.pickRandom(adjectives) + '_' + mathjs.pickRandom(nouns) + Math.floor(Math.random()*9000 + 1000)
+      };
+      students.push(student);
+    });
+    // Found class. Insert.
+    var newClass = {
+      name: nameOfClass, 
+      teacher: username,
+      students: students,
+      creationDate: new Date()
+    };
+    collection.insert(newClass, function (error, doc) {
+      if (error) finalCallback(error, false);
+      else if (!doc) finalCallback('Failed without error message', false);
+      else finalCallback(null, true);
+    });
+    
   });
   // Insert class
 };

@@ -214,8 +214,8 @@ router.post('/addClass/:username', function (req, res) {
   mathstuff.createClass(
     req.db,
     req.params.username,
-    req.params.nameOfClass,
-    req.params.studentList, 
+    req.body.nameOfClass,
+    req.body.studentList, 
     function (error, result) {
       if (error) res.status(400).send(error);
       else if (!result) res.status(409).send('Unspecified error. Perhaps you chose a class name already taken, or you have duplicates in your list of students.');

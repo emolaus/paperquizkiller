@@ -16,9 +16,6 @@ var loginRoutes = require('./routes/loginRoutes');
 var teacherActions = require('./routes/teacherActions');
 var studentActions = require('./routes/studentActions');
 var publicAPI = require('./routes/publicAPI');
-//var distributeQuizRoute = require('./routes/distributeQuiz');
-//var users = require('./routes/users');
-//var api = require('./routes/api');
 
 var app = express();
 
