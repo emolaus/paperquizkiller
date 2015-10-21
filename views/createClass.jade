@@ -11,19 +11,22 @@ head
   style.
     #topSpacing {height: 30px;}
     .headerRow{margin-bottom: 10px; margin-top: 10px;}
-    .chart_div {
-      width: 400px; 
-      height: 200px;
-      margin: 30px;
-      display: none;
-    }
+    #saveButton {margin-top: 20px;}
 body(ng-controller="MainController")
-  
-  h1 Create class
-  img(id="ornament", src="/images/ornament.png")
-  #topSpacing
-  .row
-    
+  .container
+    h1 Create class
+    img(id="ornament", src="/images/ornament.png")
+    #topSpacing
+    .row
+      .form-group
+        label(for='className') Class name:
+        input(type='text' class='form-control' id='className')
+    .row
+      h3 Students
+      ul.list-group#studentList
+      input(type='text' class='form-control' class='studentName' placeholder='Enter student name')
+    .row
+      button(class='btn btn-default col-sm-2' id='saveButton' ng-click='saveClass()') Save
   script(type="text/javascript", src="/libs/jquery.js")
   script(type="text/javascript", src="/libs/bootstrap.min.js")
   script(type="text/javascript", src="/libs/angular.js")
