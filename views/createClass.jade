@@ -1,34 +1,37 @@
 doctype html
 html(lang='en', ng-app='createClass', ng-init='username = "#{username}"')
 head
-  meta(charset="utf-8", http-equiv="X-UA-Compatible",content="IE=edge")
-  meta(name="viewport", content="width=device-width, initial-scale=1")
+  meta(charset='utf-8', http-equiv='X-UA-Compatible',content='IE=edge')
+  meta(name='viewport', content='width=device-width, initial-scale=1')
   title Paper quiz killer
-  link(href="/stylesheets/bootstrap.min.css",rel="stylesheet")
-  link(href="/stylesheets/landing-page.css", rel="stylesheet")
-  link(href="/font-awesome/css/font-awesome.min.css", rel="stylesheet", type="text/css")
-  link(href="/stylesheets/tryit.css", rel="stylesheet")
+  link(href='/stylesheets/bootstrap.min.css',rel='stylesheet')
+  link(href='/stylesheets/landing-page.css', rel='stylesheet')
+  link(href='/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+  link(href='/stylesheets/tryit.css', rel='stylesheet')
   style.
     #topSpacing {height: 30px;}
     .headerRow{margin-bottom: 10px; margin-top: 10px;}
     #saveButton {margin-top: 20px;}
-body(ng-controller="MainController")
+body(ng-controller='MainController')
   .container
     h1 Create class
-    img(id="ornament", src="/images/ornament.png")
+    img(id='ornament', src='/images/ornament.png')
     #topSpacing
     .row
-      .form-group
+      .form
         label(for='className') Class name:
         input(type='text' class='form-control' id='className')
     .row
       h3 Students
-      ul.list-group#studentList
-      input(type='text' class='form-control' class='studentName' placeholder='Enter student name')
+      ul(class='list-group' id='#studentList' ng-repeat='studentName in studentList')
+        li.list-group-item {{studentName}}
+      form(ng-submit='studentNameEntered()')
+        input(type='text' class='form-control' class='studentName' placeholder='Enter student name and press Enter' ng-model='newStudentName')
+        input(type='submit' style='position: absolute; left: -9999px; width: 1px; height: 1px;' tabindex='-1')
     .row
-      button(class='btn btn-default col-sm-2' id='saveButton' ng-click='saveClass()') Save
-  script(type="text/javascript", src="/libs/jquery.js")
-  script(type="text/javascript", src="/libs/bootstrap.min.js")
-  script(type="text/javascript", src="/libs/angular.js")
+      button(class='btn btn-default col-sm-2' id='saveButton' ng-click='saveClass()') Save this class
+  script(type='text/javascript', src='/libs/jquery.js')
+  script(type='text/javascript', src='/libs/bootstrap.min.js')
+  script(type='text/javascript', src='/libs/angular.js')
   script(type='text/javascript', src='/javascripts/createClass.js')
 
