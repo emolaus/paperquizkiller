@@ -532,10 +532,12 @@ mathstuff.getAllQuizzesRelatedToUser = function (db, userUuid, callback) {
 };
 /*
   Returns summary of quiz results:
-  ['Problem', 'Submitted', 'Correct'],
+  ['roblem index, Nr of submitted ansmwers, Nr of correct answers]
+  [
     ['1', 5, 4],
     ['2', 3, 2]
   ]
+  
 */
 mathstuff.getQuizResultSummary = function (db, quizUuid, instanceIndex, finalCallback) {
   var resultingData = [];
@@ -560,5 +562,24 @@ mathstuff.getQuizResultSummary = function (db, quizUuid, instanceIndex, finalCal
       finalCallback(null, resultingData);
     }
   }); 
+};
+
+mathstuff.createClass = function(db, username, nameOfClass, studentList, finalCallback) {
+  // TODO Check input
+  // Check so that name isn't taken
+  var collection = db.get('classCollection');
+  collection.findOne({teacherUsername: username, name: nameOfClass}, function (error, foundClass) {
+    if (error) {
+      finalCallback('Unable to search database', false);
+      return;
+    }
+    // Possible source of error - what is returned if no class found?
+    if (foundClass) {
+      finalCallback('Class name taken', false);
+      return;
+    }
+      finalCallback(null, true);
+  });
+  // Insert class
 };
 module.exports = mathstuff;

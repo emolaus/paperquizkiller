@@ -20,7 +20,7 @@ body(ng-controller='MainController')
     .row
       .form
         label(for='className') Class name:
-        input(type='text' class='form-control' id='className')
+        input(type='text' class='form-control' id='className' ng-model='nameOfClass')
     .row
       h3 Students
       ul(class='list-group' id='#studentList' ng-repeat='studentName in studentList')
@@ -30,6 +30,16 @@ body(ng-controller='MainController')
         input(type='submit' style='position: absolute; left: -9999px; width: 1px; height: 1px;' tabindex='-1')
     .row
       button(class='btn btn-default col-sm-2' id='saveButton' ng-click='saveClass()') Save this class
+
+  div(class="modal fade" id="modalInfo" role="dialog")
+    div(class="modal-dialog  modal-sm")
+      div(class="modal-content")
+        div(class="modal-header")
+          button(type="button" class="close" data-dismiss="modal")&times;
+          h4.modal-title Info
+        .modal-body#modalPreviewBody 
+          {{infoText}}
+
   script(type='text/javascript', src='/libs/jquery.js')
   script(type='text/javascript', src='/libs/bootstrap.min.js')
   script(type='text/javascript', src='/libs/angular.js')
