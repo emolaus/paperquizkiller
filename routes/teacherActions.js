@@ -48,7 +48,7 @@ router.get('/dashboard/:username', function (req, res) {
         res.status(400).send(err);
         return;
       }
-      res.render('dashboard', {quizData: docs, username: req.params.username});
+      res.render('dashboard', {quizData: docs, username: req.params.username, classes: ['7A 2015', '7B 2015', '8B 2015']});
     });
 });
 /*
@@ -118,6 +118,7 @@ router.get('/quizReportSummary/:quizUuid/:instanceIndex', function (req, res) {
       }
   }); 
 });
+
 /**
  * Receive list of uuids [{id: ...},{id: ...}, ...]
  * Return instantiated and html formatted test (no <head>) 

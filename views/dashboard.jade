@@ -5,6 +5,8 @@ head
   meta(name="viewport", content="width=device-width, initial-scale=1")
   title Paper quiz killer
   link(href="/stylesheets/bootstrap.min.css",rel="stylesheet")
+  link(href="/stylesheets/bootstrap-theme.min.css",rel="stylesheet")
+  link(href="/stylesheets/normalize.css",rel="stylesheet")
   link(href="/stylesheets/landing-page.css", rel="stylesheet")
   link(href="/font-awesome/css/font-awesome.min.css", rel="stylesheet", type="text/css")
   link(href="/stylesheets/tryit.css", rel="stylesheet")
@@ -19,42 +21,48 @@ head
     }
 body(ng-controller="MainController")
   
-  h1 Dashboard
-  img(id="ornament", src="/images/ornament.png")
-  #topSpacing
-  .row
-    div
-      ul(class='nav nav-tabs' role='tablist')
-        li(class='active' role='presentation')
-          a(href='#quizzes' aria-controls='home' role='tab' data-toggle='tab') Quizzes
-        li(role='presentation')
-          a(href='#classes' aria-controls='home' role='tab' data-toggle='tab') Classes
-      .tab-content
-        div(role='tabpanel' class='tab-pane active' id='quizzes')
-          .row.headerRow
-            button(class='btn btn-default col-sm-2', ng-click='createNewQuiz()') Create new
-          .row
-            each quiz, quizIndex in quizData
-              .panel.panel-default
-                .panel-heading #{quiz.title}
-                .panel-body
-                  button(class='btn btn-default col-sm-2' ng-click='distribute("#{quiz._id}")') Send to class
-                ul.list-group
-                  each instance, instanceIndex in quiz.instances
-                    li.list-group-element
-                      .row
-                        .col-sm-3
-                          a(href='' ng-click='viewQuizInstanceDetails(#{quizIndex}, #{instance.instanceIndex})') #{instance.creationDate}
-                        .col-sm-2 You sent #{instance.instanceCount}, #{instance.submittedCount} have been submitted
-                        .col-sm-2 
-                          a(href='' ng-click='showReportSummary("#{quiz._id}", #{quizIndex}, #{instance.instanceIndex})') Show/hide details
-                      .row
-                        div(id="chart_div#{quizIndex}_#{instance.instanceIndex}" class="chart_div")
+  .container
+    h1 Dashboard
+    img(id="ornament", src="/images/ornament.png")
+    #topSpacing
+
+    .row
+      div
+        ul(class='nav nav-tabs' role='tablist')
+          li(class='active' role='presentation')
+            a(href='#quizzes' aria-controls='home' role='tab' data-toggle='tab') Quizzes
+          li(role='presentation')
+            a(href='#classes' aria-controls='home' role='tab' data-toggle='tab') Classes
+        .tab-content
+          div(role='tabpanel' class='tab-pane active' id='quizzes')
+            .row.headerRow
+              button(class='btn btn-default col-sm-2', ng-click='createNewQuiz()') Create new
+            .row
+              each quiz, quizIndex in quizData
+                .panel.panel-default
+                  .panel-heading #{quiz.title}
+                  .panel-body
+                    button(class='btn btn-default col-sm-2' ng-click='distribute("#{quiz._id}")') Send to class
+                  ul.list-group
+                    each instance, instanceIndex in quiz.instances
+                      li.list-group-item
+                        .row
+                          .col-sm-3
+                            a(href='' ng-click='viewQuizInstanceDetails(#{quizIndex}, #{instance.instanceIndex})') #{instance.creationDate}
+                          .col-sm-2 You sent #{instance.instanceCount}, #{instance.submittedCount} have been submitted
+                          .col-sm-2 
+                            a(href='' ng-click='showReportSummary("#{quiz._id}", #{quizIndex}, #{instance.instanceIndex})') Show/hide details
+                        .row
+                          div(id="chart_div#{quizIndex}_#{instance.instanceIndex}" class="chart_div")
 
 
-        div(role='tabpanel' class='tab-pane' id='classes')
-          .row.headerRow
-            button(class='btn btn-default col-sm-2', ng-click='createNewClass()') Create new class
+          div(role='tabpanel' class='tab-pane' id='classes')
+            .row.headerRow
+              button(class='btn btn-default col-sm-2', ng-click='createNewClass()') Create new class
+            .row
+              ul(class='list-group')
+                each className, index in classes
+                  li(class='list-group-item') #{className}
 
   script(type="text/javascript", src="/libs/jquery.js")
   script(type="text/javascript", src="/libs/bootstrap.min.js")
