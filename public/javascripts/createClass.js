@@ -35,8 +35,8 @@
         function success(result) {
           $window.location.href = '/dashboard/' + $scope.username;
         },
-        function error(error) {
-          $scope.infoText = errors;
+        function error(response) {
+          $scope.infoText = response.data;
         $('#modalInfo').modal('show');
         });
     }

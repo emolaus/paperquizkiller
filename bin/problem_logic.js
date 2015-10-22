@@ -579,7 +579,7 @@ mathstuff.createClass = function(db, username, nameOfClass, studentList, finalCa
     }
     // Possible source of error - what is returned if no class found?
     if (foundClass) {
-      finalCallback('Class name taken', false);
+      finalCallback('You already have a class with that name.', false);
       return;
     }
     var students = [];
