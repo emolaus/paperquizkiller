@@ -117,12 +117,10 @@ function instantiateFromProblemUUIDs(db, uuids, successCallback, errorCallback) 
           someErrorOccurred = true;
           callback(error);
         } else if (problem) {
-          console.log('instantiateFromProblemUUIDs interation. received problem: ' + JSON.stringify(problem));
           var instantiatedProblem = setOne(problem);
           instantiatedTest.push(instantiatedProblem);
           callback(null);
         } else {
-          console.log('instantiate() problem not found and no error given. problem: ' + item.uuid);
           someErrorOccurred = true;
           callback(null);
         }
@@ -311,7 +309,6 @@ mathstuff.instantiateQuiz = function (db, nameOfClass, username, userUuid, quizU
                   async.whilst(
                     function () {return countInstances < count},
                     function (callback) {
-                      console.log('instantiating nr ' + countInstances);
                       mathstuff.instantiate(
                         db, 
                         quizUuid, 
