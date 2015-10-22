@@ -61,8 +61,8 @@ body(ng-controller="MainController")
               button(class='btn btn-default col-sm-2', ng-click='createNewClass()') Create new class
             .row
               ul(class='list-group')
-                each className, index in classes
-                  li(class='list-group-item') #{className}
+                each classObject, index in classes
+                  li(class='list-group-item') #{classObject.name}
 
   script(type="text/javascript", src="/libs/jquery.js")
   script(type="text/javascript", src="/libs/bootstrap.min.js")

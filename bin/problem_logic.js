@@ -605,6 +605,13 @@ mathstuff.createClass = function(db, username, nameOfClass, studentList, finalCa
     });
     
   });
-  // Insert class
+};
+mathstuff.getClassesOfUser = function (db, username, finalCallback) {
+  var collection = db.get('classCollection');
+  collection.find({teacher: username}, function (error, docs) {
+    if (error) finalCallback(error, null);
+    else if (!docs) finalCallback(null, []);
+    else finalCallback(null, docs);
+  });
 };
 module.exports = mathstuff;

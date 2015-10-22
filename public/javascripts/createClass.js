@@ -30,7 +30,6 @@
         $('#modalInfo').modal('show');
         return;
       }
-      console.log($scope.username)
       $http.post('/addClass/' + $scope.username, {nameOfClass: $scope.nameOfClass, studentList: $scope.studentList}).then(
         function success(result) {
           $window.location.href = '/dashboard/' + $scope.username;

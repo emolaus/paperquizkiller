@@ -48,7 +48,11 @@ router.get('/dashboard/:username', function (req, res) {
         res.status(400).send(err);
         return;
       }
-      res.render('dashboard', {quizData: docs, username: req.params.username, classes: ['7A 2015', '7B 2015', '8B 2015']});
+      mathstuff.getClassesOfUser(req.db, req.params.username, function (error, listOfClasses) {
+          if (error) res.status(400).send(error);
+          else res.render('dashboard', {quizData: docs, username: req.params.username, classes: listOfClasses});
+      });
+      
     });
 });
 /*
@@ -102,7 +106,7 @@ router.get('/quizInstances/:uuid/:instanceIndex', function (req, res) {
 
 router.get('/quizReportSummary/:quizUuid/:instanceIndex', function (req, res) {
 
-  // TODO
+  // TODO check input
   mathstuff.getQuizResultSummary(
     req.db, 
     req.params.quizUuid, 
@@ -117,6 +121,17 @@ router.get('/quizReportSummary/:quizUuid/:instanceIndex', function (req, res) {
         res.send(formatted);
       }
   }); 
+});
+
+router.get('/classes/:username', function (req, res) {
+  // TODO check input
+  mathstuff.getClassesOfUser(
+    req.db, 
+    req.params.username, 
+    function (error, listOfClasses) {
+      if (error) res.status(400).send(error);
+      else res.send(listOfClasses);
+    });
 });
 
 /**
