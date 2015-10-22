@@ -23,7 +23,14 @@ router.get('/distributeQuiz/:uuid', function (req, res) {
     req.params.uuid, 
     req.db, 
     function success() {
-      res.render('distributeQuiz', {quizUuid: req.params.uuid, username: req.cookies.user.username});
+      mathstuff.getClassesOfUser(
+      req.db, 
+      req.cookies.user.username, 
+      function (error, listOfClasses) {
+        if (error) res.status(400).send(error);
+        else res.render('distributeQuiz', {quizUuid: req.params.uuid, username: req.cookies.user.username, listOfClasses: listOfClasses});
+      });
+      
     }, 
     function error() {
       console.log('GET /distribute quiz. Received invalid quiz uuid ' + req.params.uuid);
@@ -197,7 +204,11 @@ router.post('/instantiateQuiz', function (req, res) {
     res.status(400).send('Data missing');
     return;
   }
-  if (!_.has(req.body, 'instanceCount')) {
+  if (!_.has(req.body, 'nameOfClass')) {
+    res.status(400).send('Data missing');
+    return; 
+  }
+  if (!_.has(req.body, 'username')) {
     res.status(400).send('Data missing');
     return; 
   }
@@ -209,10 +220,11 @@ router.post('/instantiateQuiz', function (req, res) {
 
   //var quizzesCookie = req.cookies.quizzes;
   mathstuff.instantiateQuiz(
-    req.body.quizUuid,
-    req.body.instanceCount,
-    req.cookies.user.userUuid,
     req.db,
+    req.body.nameOfClass,
+    req.body.username,
+    req.cookies.user.userUuid,
+    req.body.quizUuid,
     function successCallback(data) {
       //quizzesCookie.instanceIndex = data.instanceIndex;
       //res.cookie('quizzes', quizzesCookie, {maxAge: 1000*3600*24*31});

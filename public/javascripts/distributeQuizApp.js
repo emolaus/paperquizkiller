@@ -4,9 +4,9 @@
   app.controller('MainController', ['$scope', '$http', '$window', function ($scope, $http, $window){
     $scope.instanceCount = 1;
     $scope.showForm = true;
-
+    $scope.selectedClass = 'bla bla';
     $scope.instantiateQuizzes = function () {
-      $http.post('/instantiateQuiz', {instanceCount: $scope.instanceCount, quizUuid: $scope.quizUuid}).then(
+      $http.post('/instantiateQuiz', {nameOfClass: $scope.selectedClass, username: $scope.username, quizUuid: $scope.quizUuid}).then(
         function successCallback(response) {
           console.log('Success!');
           console.log(response);
@@ -44,5 +44,9 @@
     $scope.goToDashboard = function () {
       $window.location.href = '/dashboard/' + $scope.username;
     }
+    $('.classListElement').click(function (e) {
+      $scope.selectedClass = this.innerHTML;
+      $('#selectedClassFeedback').html('You selected class ' + this.innerHTML);
+    });
   }]);
 })();

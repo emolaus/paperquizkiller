@@ -12,22 +12,31 @@ head
   style.
     .message {display: none;}
 body(ng-controller="MainController")
-  h1 2. Send it
-  img(id="ornament", src="/images/ornament.png")
-  form(class="form-horizontal initialForm")
-    .form-group
-      label(for="inputStudentCount", class="col-sm-2 control-label") Nr. of students:
-      .col-sm-2
-        input(type="number", class="form-control", id="inputStudentCount", ng-model="instanceCount")
-
-  button(class="btn btn-default col-sm-1 initialForm", ng-click="instantiateQuizzes()") Go 
-  br
-  div(class="row message")
-    h3 Your quizzes are ready to be sent out to the students
+  .container
+    h1 2. Send it
+    img(id="ornament", src="/images/ornament.png")
+    .dropdown
+      button(class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true") Select class
+        span.caret
+      ul(class="dropdown-menu" aria-labelledby="dropdownMenu1")
+        each classObject in listOfClasses
+          li 
+            a(href='#' class='classListElement') #{classObject.name}
+    //
+      form(class="form-horizontal initialForm")
+        .form-group
+          label(for="inputStudentCount", class="col-sm-2 control-label") Nr. of students:
+          .col-sm-2
+            input(type="number", class="form-control", id="inputStudentCount", ng-model="instanceCount")
+    p#selectedClassFeedback You selected class: 
+    button(class="btn btn-default col-sm-1 initialForm", ng-click="instantiateQuizzes()") Go 
     br
-    p Please note that this is a demo version. These tests are real and functioning but we do not save any names or email addresses on the server. It's up to you to take note which student received which url.
-    br
-    button(id="toDashboardButton", class="btn btn-default col-sm-2", ng-click="goToDashboard()") Go to my dashboard
+    div(class="row message")
+      h3 Your quizzes are ready to be sent out to the students
+      br
+      p Please note that this is a demo version. These tests are real and functioning but we do not save any names or email addresses on the server. It's up to you to take note which student received which url.
+      br
+      button(id="toDashboardButton", class="btn btn-default col-sm-2", ng-click="goToDashboard()") Go to my dashboard
   div(id="quizList")
   script(type="text/javascript", src="/libs/jquery.js")
   script(type="text/javascript", src="/libs/bootstrap.min.js")

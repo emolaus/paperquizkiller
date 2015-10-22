@@ -256,16 +256,10 @@ mathstuff.verifyQuizProblems = function(problems, db, callback) {
   Returns successCallback({success: true, quizId: uuid, instanceIndex: instanceIndex});
   // TODO verify userUuid
 */
-mathstuff.instantiateQuiz = function (uuid, count, userUuid, db, successCallback, errorCallback) {
-  // Sanitize data
-  if (!_.isNumber(count) ||
-      count < 0 ||
-      count > config.MAX_QUIZ_INSTANTIATIONS) {
-    errorCallback('Too many instantiations');
-    return;
-  } 
+mathstuff.instantiateQuiz = function (db, nameOfClass, username, userUuid, quizUuid, successCallback, errorCallback) {
+
   mathstuff.verifyQuizExists(
-    uuid, 
+    quizUuid,
     db, 
     function exists(doc) {
       // OK to insert!
@@ -273,8 +267,8 @@ mathstuff.instantiateQuiz = function (uuid, count, userUuid, db, successCallback
       // TODO: create all instantiations, point back to quiz and instance nr
       var collection = db.get('quizCollection');
       collection.updateById(
-        uuid,
-        {$push: {instances: {creationDate: new Date(), userUuid: userUuid}}},
+        quizUuid,
+        {$push: {instances: {creationDate: new Date(), userUuid: userUuid, username: username}}},
         function (err, doc) {
           if (err) {
             console.error('At instantiateQuiz: failed updating quiz with new instance object.');
@@ -283,7 +277,7 @@ mathstuff.instantiateQuiz = function (uuid, count, userUuid, db, successCallback
           } 
           else {
             // Success. Check length of the instances array
-            collection.findById(uuid, function (err, quiz){
+            collection.findById(quizUuid, function (err, quiz){
               if (err) {
                 errorCallback('Couldn\'t find the quiz');
               } else if (quiz) {
@@ -294,50 +288,72 @@ mathstuff.instantiateQuiz = function (uuid, count, userUuid, db, successCallback
                 }
                 // At this point, we have added an instance (a date) into the original quiz,
                 // and we have figured out which index it has. Now instantiate a bunch of tests.
-                var instances = [];
-                var someErrorOccurred = false;
-                // Replace this with async.whilst
-                var countInstances = 0;
-                async.whilst(
-                  function () {return countInstances < count},
-                  function (callback) {
-                    console.log('instantiating nr ' + countInstances);
-                    mathstuff.instantiate(
-                      db, 
-                      uuid, 
-                      function success(problems) {
-                        instances.push(
-                        {
-                          quizId: uuid,
-                          title: quiz.title,
-                          index: ++countInstances, // Looks better to start at 1
-                          instanceIndex: instanceIndex,
-                          problems: problems
-                        });
-                        callback();
-                      }, 
-                      function error(e) {
-                        someErrorOccurred = true;
-                        console.error(e);
-                        callback();
-                      } 
-                    );
-                  },
-                  function lastly (){
-
-                    var quizInstanceCollection = db.get('quizInstanceCollection');
-                    // At this point we have a bunch of quiz instance db objects.
-                    // Insert all into db.
-                    quizInstanceCollection.insert(instances, function (err, doc) {
-                      if (err) {
-                        errorCallback('Failed creating instances.');
-                      } else {
-                        successCallback({success: true, quizId: uuid, instanceIndex: instanceIndex});
-                      }
-                    });
+                // fetch class and for each student, generate a quizInstance
+                var classCollection = db.get('classCollection');
+                classCollection.findOne({teacher: username, name: nameOfClass}, function (error, classObject) {
+                  if (error) { 
+                    errorCallback('Couldnt find class.');
+                    return;
                   }
-                );
+                  if (!classObject) {
+                    errorCallback('Couldnt find class.');
+                    return;
+                  }
+                  if (_.isEmpty(classObject.students) || !classObject.students) {
+                    errorCallback('No students in the given class.');
+                    return;
+                  }
 
+                  var count = classObject.students.length;
+                  var instances = [];
+                  var someErrorOccurred = false;
+                  var countInstances = 0;
+                  async.whilst(
+                    function () {return countInstances < count},
+                    function (callback) {
+                      console.log('instantiating nr ' + countInstances);
+                      mathstuff.instantiate(
+                        db, 
+                        quizUuid, 
+                        function success(problems) {
+                          instances.push(
+                          {
+                            quizId: quizUuid,
+                            title: quiz.title,
+                            index: countInstances+1, // Looks better to start at 1
+                            instanceIndex: instanceIndex,
+                            problems: problems,
+                            teacher: username,
+                            student: classObject.students[countInstances].name
+                          });
+                          countInstances++;
+                          callback();
+                        }, 
+                        function error(e) {
+                          someErrorOccurred = true;
+                          console.error(e);
+                          callback();
+                        } 
+                      );
+                    },
+                    function lastly (){
+
+                      var quizInstanceCollection = db.get('quizInstanceCollection');
+                      // At this point we have a bunch of quiz instance db objects.
+                      // Insert all into db.
+                      quizInstanceCollection.insert(instances, function (err, doc) {
+                        if (err) {
+                          errorCallback('Failed creating instances.');
+                        } else {
+                          successCallback({success: true, quizId: quizUuid, instanceIndex: instanceIndex});
+                        }
+                      });
+                    }
+                  );
+  
+                  
+                });
+                
               }
 
             });
