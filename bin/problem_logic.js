@@ -470,9 +470,12 @@ mathstuff.submitQuiz = function(uuid, answers, db, successCallback, errorCallbac
         // Save the result in lighter array to return to client
         var resultArray = Array(quiz.problems.length);
         quiz.submitted = true;
+        quiz.totalCount = quiz.problems.length;
+        quiz.nrCorrect = 0;
         for (var i = 0; i < answers.length; i++) {
           quiz.problems[i].result = quiz.problems[i].solution == answers[i];
           quiz.problems[i].answer = answers[i];
+          if (quiz.problems[i].result) quiz.nrCorrect++;
           resultArray[i] = quiz.problems[i].result;
         }       
         var collection = db.get('quizInstanceCollection'); 

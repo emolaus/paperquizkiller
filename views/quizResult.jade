@@ -5,6 +5,7 @@ html(lang='en')
     link(href='/../stylesheets/bootstrap.min.css', rel='stylesheet')
   body(ng-controller='MainController')
     h2 You submitted answers to #{quiz.title}!
+    h3 You scored #{quiz.nrCorrect} out of #{quiz.totalCount} 
     each problem, index in quiz.problems
       p <b>#{index+1}.</b> &nbsp; #{ "\\(" + problem.text + "\\)"}
       p <b>Answer: #{problem.solution}, you answered: #{problem.answer}</b> 
