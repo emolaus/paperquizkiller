@@ -22,7 +22,7 @@
       $window.location.href = '/createQuiz';
     };
     $scope.viewQuizInstanceDetails = function(quizIndex, instanceIndex) {
-      console.log('TODO create quiz detail page.');
+      //$window.location.href = '/quizReport/' + $scope.;
     };
     $scope.showReportSummary = function(quizUuid, quizIndex, instanceIndex) {
       var divId = 'chart_div' + quizIndex + '_' + instanceIndex;
