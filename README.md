@@ -8,6 +8,7 @@ Version 0: a bare-bones application setup using express-generator.
 Version 1: a pitch site and a demo flow of the application.  
 Version 2: "distribute" page, and quiz pages generated for each student.  
 Version 3: a rudimentary dashboard with summaries of quiz results.  
+Version 4: create classes, distribute to entire class. Ongoing in branch "dev".
 
 The actual database is not included in the repo.
 
@@ -26,6 +27,7 @@ Start mongod with `mongod --dbpath <app-path>/data`
 First time running, run `npm install`
 
 Start app with `npm start`
+Or debug with `node-debug bin/www`
 
 Visit localhost:3000/ To see the gorgeous bootstrap pitch site. 
-Visit localhost:3000/tryit.html to build a test.
+Visit localhost:3000/createQuiz to build a quiz.
