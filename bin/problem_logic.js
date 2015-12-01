@@ -43,11 +43,13 @@ function setOne(problem, seed) {
     instantiatedProblem.parameters = {};
     for (var param in problem.parameters){
       if (problem.parameters.hasOwnProperty(param)) {
-        paramObj = problem.parameters[param];
+        var paramObj = problem.parameters[param];
         var setVal = setParameter(paramObj, seed);
         //problem.parameters[param].instantiated = setVal;
         while (newText.search("_" + param) > -1) {
           newText = newText.replace("_" + param, setVal);
+        }
+        while (solution.search("_" + param) > -1) {
           solution = solution.replace("_" + param, setVal);
         }
         instantiatedProblem.parameters[param] = setVal;
@@ -393,8 +395,10 @@ mathstuff.getQuizInstance = function (uuid, db, successCallback, errorCallback) 
   var collection = db.get('quizInstanceCollection');
   collection.findById(uuid,function (err, doc) {
     if (err) errorCallback('Quiz not found in db.');
-    else if (doc) successCallback(doc);
-    else errorCallback('Quiz instance not found. No error given.');
+    else if (doc) {
+      successCallback(doc);
+      console.log(JSON.stringify(doc));
+    } else errorCallback('Quiz instance not found. No error given.');
   });
 }
 /* 
