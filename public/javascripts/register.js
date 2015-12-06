@@ -2,9 +2,9 @@
   var app = angular.module('register', []);
 
   app.controller('MainController', ['$scope', '$http', '$window', function ($scope, $http, $window){
-    $scope.username = "";
-    $scope.password = "";
-    $scope.loginOrRegister = "register";
+    $scope.username = "test";
+    $scope.password = "abc";
+    $scope.loginOrRegister = "login";
     $scope.go = function () {
       if (!$scope.username || !$scope.password) {
         showInfoMissing();

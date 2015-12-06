@@ -34,10 +34,10 @@ body(ng-controller="MainController")
             label(for="inputPassword", class="col-sm-2 control-label") Password
             .col-sm-2
               input(type="password", class="form-control", id="inputPassword", ng-model="password")
-      .row#loginLink
+      //.row#loginLink
         .col-sm-4
-        a(href="", ng-show="loginOrRegister=='register'", ng-click="loginOrRegister='login'") I'm registered, take me to the login page
-      .row#registerLink
+          a(href="", ng-show="loginOrRegister=='register'", ng-click="loginOrRegister='login'") I'm registered, take me to the login page
+      //.row#registerLink
         .col-sm-4
         a(href="", ng-show="loginOrRegister=='login'", ng-click="loginOrRegister='register'") I want to register 
       .row

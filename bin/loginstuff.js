@@ -10,7 +10,7 @@ loginstuff.login = function (req, res, next) {
       !_.has(req.cookies.user, 'username')) {
     if (req.method === 'GET') res.cookie('pendingRedirect', {url: req.url}, {maxAge: config.COOKIE_MAX_AGE});
     console.log('No cookie set. Redirect.');
-    res.redirect('/register');
+    res.redirect('/login');
     return;
   }
   next();

@@ -43,7 +43,7 @@ app.use(function(req,res,next){
 app.use('/', express.static(__dirname + "/public"));
 //app.get('/logout', function (req, res) { res.clearCookie('user'); res.send('Logged out.'); });
 app.use('/', loginRoutes);
-app.get('/register', function (req, res) { res.render('register.jade'); });
+app.get('/login', function (req, res) { res.render('register.jade'); });
 app.use('/', studentActions);
 app.use('/api', publicAPI);
 app.use('/', loginMiddleware, teacherActions);
