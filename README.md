@@ -8,7 +8,7 @@ Version 0: a bare-bones application setup using express-generator.
 Version 1: a pitch site and a demo flow of the application.  
 Version 2: "distribute" page, and quiz pages generated for each student.  
 Version 3: a rudimentary dashboard with summaries of quiz results.  
-Version 4: create classes, distribute to entire class. Ongoing in branch "dev".
+Version 4: create classes, distribute to entire class. 
 
 The actual database is not included in the repo.
 
