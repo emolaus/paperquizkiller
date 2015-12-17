@@ -99,7 +99,7 @@ router.get('/quizInstances/:uuid/:instanceIndex', function (req, res) {
       var response = _.map(quizInstances, function (quizInstance) {
         return {
           index: quizInstance.index,
-          url: host + '/quiz/' + quizInstance._id
+          url: 'http://' + host + '/quiz/' + quizInstance._id
         }
       }); 
 
