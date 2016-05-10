@@ -22,7 +22,7 @@ Install mongodb, I'm using v. 3.0.6
 
 Download mathjax under public/libs/mathjax/, I'm using v. 2.5
 
-Start mongod with `mongod --dbpath <app-path>/data`
+Start mongod with `mongod --dbpath <app-path>/data` or on Debian (systemd) see http://andyfelong.com/2016/01/mongodb-3-0-9-binaries-for-raspberry-pi-2-jessie/
 
 First time running, run `npm install`
 
