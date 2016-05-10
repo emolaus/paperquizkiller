@@ -29,5 +29,5 @@ First time running, run `npm install`
 Start app with `npm start`
 Or debug with `node-debug bin/www`
 
-Visit localhost:3000/ To see the gorgeous bootstrap pitch site. 
-Visit localhost:3000/createQuiz to build a quiz.
+Visit localhost:<PORT>/ To see the gorgeous bootstrap pitch site. 
+Visit localhost:<PORT>/createQuiz to build a quiz.
