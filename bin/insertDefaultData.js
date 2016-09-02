@@ -1,5 +1,9 @@
 module.exports = function(db) {
-  insertInto(db, 'problemCollection', problems);
+  console.log("Attempting to insert some math problems.");
+  insertInto(db, 'problemCollection', problems, function () {
+    console.log("Attempting to insert a dummy user.");
+    insertInto(db, 'usersLight', [{username: 'test', password: 'abc'}])
+  });
   /*  var problem_collection = db.get('problem_collection');
       problem_collection.find({},{},function (e, problems){
       debugger;   
@@ -11,7 +15,7 @@ module.exports = function(db) {
     });*/
 };
 
-function insertInto(db, collection, data) {
+function insertInto(db, collection, data, callback) {
   var collectionHandle = db.get(collection);
   collectionHandle.find({}, {}, function(e, docs) {
     if (!e && docs.length === 0) {
@@ -19,6 +23,8 @@ function insertInto(db, collection, data) {
       // insert some default data
       collectionHandle.insert(data, function(err, doc) {
         console.log('insertInto: Inserted default data in collection ' + collection);
+        if (callback) callback();
+        else console.log('No more data to insert.');
       });
     } else if (e) {
       console.log('insertInto: Error');
