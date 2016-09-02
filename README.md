@@ -6,7 +6,7 @@ Paper quiz killer is a web tool where math teachers can
 * Create and share quiz problems
 * Generate and reuse quizzes and have them sent out
 * Have the quizzes corrected by the server
-* Get an overview over classes and individuals in a dashboard
+* Get an overview over classes' and individuals' results in a dashboard
 
 Oh, and you can parametrize the problems so that A + B =
 Is randomly initated to e.g. 2 + 3 = or 1 + 2 =. 
