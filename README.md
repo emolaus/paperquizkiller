@@ -1,8 +1,8 @@
 # README #
 
-### What is this repository for? ###
+### What is paper quiz killer? ###
 
-Paper quiz killer is a web tool where math teachers can 
+PQK is a web tool where math teachers can 
 * Create and share quiz problems
 * Generate and reuse quizzes and have them sent out
 * Have the quizzes corrected by the server
@@ -10,7 +10,7 @@ Paper quiz killer is a web tool where math teachers can
 
 Oh, and you can parametrize the problems so that A + B =
 Is randomly initated to e.g. 2 + 3 = or 1 + 2 =. 
-In other words, the problems are randomized so that two tests are similar but not quite the same. 
+In other words, the problems are randomized so that two tests are similar but not the same. 
 
 Paper quiz killer is powered by node, express, angular and mongodb.
 
